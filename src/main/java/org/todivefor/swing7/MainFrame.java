@@ -27,7 +27,17 @@ public class MainFrame extends JFrame {
         
         textPanel = new TextPanel();
         
-        toolBar.setTextPanel(textPanel);                                            // Link between toolbar and textPanel
+        /**
+         * 
+         */
+        toolBar.setStringListener(new org.todivefor.swing7.StringListener() {
+            @Override
+            public void textEmitted(String text) {
+                
+                textPanel.appendText(text);
+            }
+            
+        });
         
         /*
         btn = new JButton("Click Me");

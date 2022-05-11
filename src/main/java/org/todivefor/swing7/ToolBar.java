@@ -19,7 +19,7 @@ public class ToolBar extends JPanel implements ActionListener {
     private JButton helloButton;
     private JButton goodbyeButton;
     
-    private TextPanel textPanel;
+    private StringListener textListener;
 
     public ToolBar() {
 
@@ -36,24 +36,23 @@ public class ToolBar extends JPanel implements ActionListener {
 
     }
 
+    public void setStringListener(StringListener listener) {
+        
+        this.textListener = listener;
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
 
         JButton clicked = (JButton) e.getSource();
         if (clicked == helloButton) {
-            textPanel.appendText("Hello\n");
+            if (textListener != null) {
+                textListener.textEmitted("Hello\n");
+            }
         } else {
-            textPanel.appendText("Goodbye\n");
+            if (textListener != null) {
+                textListener.textEmitted("Goodbye\n");
+            }
         }
-    }
-
-    /**
-     * This provides link to textPanel textArea. Couples the two components
-     * which is bad as they should know as little as possible about each other.
-     * @param textPanel 
-     */
-    void setTextPanel(TextPanel textPanel) {
-        
-        this.textPanel = textPanel;
     }
 }
