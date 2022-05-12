@@ -16,6 +16,7 @@ public class MainFrame extends JFrame {
     private final TextPanel textPanel;
 //    private JButton btn;
     private final ToolBar toolBar;
+    private final FormPanel formPanel;
     
     public MainFrame() {
 
@@ -39,6 +40,8 @@ public class MainFrame extends JFrame {
             
         });
         
+        formPanel = new FormPanel();
+        
         /*
         btn = new JButton("Click Me");
         btn.addActionListener(new ActionListener() {
@@ -51,6 +54,7 @@ public class MainFrame extends JFrame {
         */
         add(toolBar, BorderLayout.NORTH);
         add(textPanel, BorderLayout.CENTER);
+        add(formPanel, BorderLayout.WEST);
 //        add(btn, BorderLayout.SOUTH);
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
