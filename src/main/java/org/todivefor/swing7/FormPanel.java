@@ -65,6 +65,14 @@ public class FormPanel extends JPanel {
         gc.gridy = 0;                                                               // Not needed, for clarity
         gc.weightx = 1;                                                             // Relative width of cell
         gc.weighty = 0.1;                                                           // Relative height of cells
+        gc.insets = new Insets(0, 0, 0, 5);
+        add(nameLabel, gc);
+        
+        // 1, 0
+        gc.gridx = 1;
+        gc.gridy = 0;                                                               // Not needed, for clarity
+        gc.weightx = 1;
+        gc.weighty = 0.1;
         gc.anchor = GridBagConstraints.LINE_START;
         gc.insets = new Insets(0, 0, 0, 0);                                         // Reset
         add(nameField,gc);
