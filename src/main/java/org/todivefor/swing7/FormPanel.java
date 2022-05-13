@@ -56,7 +56,7 @@ public class FormPanel extends JPanel {
         gc.fill = GridBagConstraints.NONE;
         
         // 0, 0
-        gc.anchor = GridBagConstraints.LINE_END;                                    // Right align to cell
+        gc.anchor = GridBagConstraints.LINE_END;                                    // Align cell right
         gc.insets = new Insets(0, 0, 0, 5);
         add(nameLabel, gc);
         
@@ -65,7 +65,7 @@ public class FormPanel extends JPanel {
         gc.gridy = 0;                                                               // Not needed, for clarity
         gc.weightx = 1;
         gc.weighty = 0.1;
-        gc.anchor = GridBagConstraints.LINE_START;                                  // Left align to cell
+        gc.anchor = GridBagConstraints.LINE_START;
         gc.insets = new Insets(0, 0, 0, 0);
         add(nameField,gc);
         
