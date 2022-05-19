@@ -8,6 +8,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -27,6 +29,8 @@ public class FormPanel extends JPanel {
     private JTextField occupationField;
     private JButton okBtn;
     
+    private FormListener formListener;
+    
     public FormPanel() {
         
         Dimension dim = getPreferredSize();
@@ -39,6 +43,25 @@ public class FormPanel extends JPanel {
         occupationField = new JTextField(10);
         
         okBtn = new JButton("OK");
+        
+        okBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                // Get data input from JTextFields
+                String name = nameField.getText();                                  // Get name
+                String occupation = occupationField.getText();                      // Get occupation
+                
+                // Save input data as EventObject
+                FormEvent ev = new FormEvent(this, name, occupation);
+                
+                // Trigger event in MainFrame
+                if (formListener != null) {
+                    formListener.formEventOcurred(ev);
+                }
+            }
+            
+        });
         
         Border innerBorder = BorderFactory.createTitledBorder("Add Person");
         Border outerBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
@@ -98,6 +121,11 @@ public class FormPanel extends JPanel {
 //        gc.anchor = GridBagConstraints.LAST_LINE_START;                             // Bottom right of cell
         gc.insets = new Insets(10, 0, 0, 0);                                        // Space (OK) down a little
         add(okBtn, gc);
+    }
+    
+    public void setFormListener(FormListener listener) {
+        
+        this.formListener = listener;
     }
     
 }

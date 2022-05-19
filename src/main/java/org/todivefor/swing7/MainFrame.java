@@ -42,6 +42,18 @@ public class MainFrame extends JFrame {
         
         formPanel = new FormPanel();
         
+        formPanel.setFormListener(new FormListener() {
+            public void formEventOcurred(FormEvent e) {
+                
+                // Get input data from EventObject
+                String name = e.getName();
+                String occupation = e.getOccupation();
+                
+                // Append data to TextArea in TextPanel
+                textPanel.appendText(name + ": " + occupation +"\n");
+            }
+        });
+        
         /*
         btn = new JButton("Click Me");
         btn.addActionListener(new ActionListener() {
