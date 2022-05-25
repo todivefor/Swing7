@@ -14,6 +14,7 @@ public class FormEvent extends EventObject {
 
     private String name;
     private String occupation;
+    private int ageCategory;
 
     /**
      * Constructor to save data from the JTextFields in FormPanel
@@ -21,11 +22,12 @@ public class FormEvent extends EventObject {
      * @param name
      * @param occupation 
      */
-    public FormEvent(Object source, String name, String occupation) {
+    public FormEvent(Object source, String name, String occupation, int ageCat) {
         
         super(source);
         this.name = name;
         this.occupation = occupation;
+        this.ageCategory = ageCat;
     }
     
     public String getName() {
@@ -46,6 +48,11 @@ public class FormEvent extends EventObject {
     public void setOccupation(String occupation) {
         
         this.occupation = occupation;
+    }
+    
+    public int getAgeCategory () {
+        
+        return ageCategory;
     }
     
 }
