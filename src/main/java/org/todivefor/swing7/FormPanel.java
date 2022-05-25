@@ -11,8 +11,10 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
@@ -28,6 +30,7 @@ public class FormPanel extends JPanel {
     private JTextField nameField;
     private JTextField occupationField;
     private JButton okBtn;
+    private JList ageList;
     
     private FormListener formListener;
     
@@ -42,6 +45,20 @@ public class FormPanel extends JPanel {
         nameField = new JTextField(10);                                             // 10 characters
         occupationField = new JTextField(10);
         
+        ageList = new JList();
+        
+        DefaultListModel ageModel = new DefaultListModel();
+        ageModel.addElement("Under 18");
+        ageModel.addElement("18 to 65");
+        ageModel.addElement("65 or over");
+        ageList.setModel(ageModel);
+        
+        ageList.setSelectedIndex(1);                                                // Set default
+        
+        ageList.setPreferredSize(new Dimension(125, 55));
+        
+        ageList.setBorder(BorderFactory.createEtchedBorder());
+        
         okBtn = new JButton("OK");
         
         okBtn.addActionListener(new ActionListener() {
@@ -51,6 +68,9 @@ public class FormPanel extends JPanel {
                 // Get data input from JTextFields
                 String name = nameField.getText();                                  // Get name
                 String occupation = occupationField.getText();                      // Get occupation
+                String ageCat = (String) ageList.getSelectedValue();                // From JList
+                
+                System.out.println(ageCat);                                         // Debug
                 
                 // Save input data as EventObject
                 FormEvent ev = new FormEvent(this, name, occupation);
@@ -111,15 +131,25 @@ public class FormPanel extends JPanel {
         gc.insets = new Insets(0, 0, 0, 0);
         add(occupationField, gc);
         
-        ///// Third row /////
+        ///// Third row ///// JList
         // 1, 2
         gc.gridx = 1;
         gc.gridy = 2;
         gc.weightx = 1;
-        gc.weighty = 1.0;                                                           // Reative height, bigger cell
+        gc.weighty = 0.2;                                                           // Reative height
+        gc.anchor = GridBagConstraints.FIRST_LINE_START;                            // Top right of cell
+        gc.insets = new Insets(10, 0, 0, 0);                                        // Space ageList down a little
+        add(ageList, gc);
+        
+        ///// Fourth row ///// (OK)
+        // 1, 3
+        gc.gridx = 1;
+        gc.gridy = 3;
+        gc.weightx = 1;
+        gc.weighty = 2.0;                                                           // Reative height, bigger cell
         gc.anchor = GridBagConstraints.FIRST_LINE_START;                            // Top right of cell
 //        gc.anchor = GridBagConstraints.LAST_LINE_START;                             // Bottom right of cell
-        gc.insets = new Insets(10, 0, 0, 0);                                        // Space (OK) down a little
+        gc.insets = new Insets(0, 0, 0, 0);                                        // Reset
         add(okBtn, gc);
     }
     
