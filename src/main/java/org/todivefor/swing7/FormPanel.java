@@ -11,8 +11,10 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -31,6 +33,7 @@ public class FormPanel extends JPanel {
     private JTextField occupationField;
     private JButton okBtn;
     private JList ageList;
+    private JComboBox empCombo;
     
     private FormListener formListener;
     
@@ -44,20 +47,26 @@ public class FormPanel extends JPanel {
         occupationLabel = new JLabel("Occupation: ");
         nameField = new JTextField(10);                                             // 10 characters
         occupationField = new JTextField(10);
-        
         ageList = new JList();
+        empCombo = new JComboBox();
         
+        // Setup list box
         DefaultListModel ageModel = new DefaultListModel();
         ageModel.addElement(new AgeCategory(0, "Under 18"));
         ageModel.addElement(new AgeCategory(1, "18 to 65"));
         ageModel.addElement(new AgeCategory(2, "65 or over"));
         ageList.setModel(ageModel);
-        
         ageList.setSelectedIndex(1);                                                // Set default
-        
-        ageList.setPreferredSize(new Dimension(125, 55));
-        
+        ageList.setPreferredSize(new Dimension(125,55));
         ageList.setBorder(BorderFactory.createEtchedBorder());
+        
+        // Setup combo box
+        DefaultComboBoxModel empModel = new DefaultComboBoxModel();
+        empModel.addElement("Employed");
+        empModel.addElement("Self-Employed");
+        empModel.addElement("Unmployed");
+        empCombo.setModel(empModel);
+        empCombo.setPreferredSize(new Dimension(130, 35));
         
         okBtn = new JButton("OK");
         
@@ -69,12 +78,14 @@ public class FormPanel extends JPanel {
                 String name = nameField.getText();                                  // Get name
                 String occupation = occupationField.getText();                      // Get occupation
                 AgeCategory ageCat = (AgeCategory) ageList.getSelectedValue();      // From JList
+                String empCat = (String) empCombo.getSelectedItem();                // From JComboBox
                 
-                System.out.println(ageCat.getId());                                 // Debug
+//                System.out.println(ageCat.getId());                                 // Debug
+//                System.out.println(empCat);                                         // Debug
                 
                 // Save input data as EventObject
                 FormEvent ev = new FormEvent(this, name, occupation, 
-                        ageCat.getId());
+                        ageCat.getId(), empCat);
                 
                 // Trigger event in MainFrame
                 if (formListener != null) {
@@ -88,6 +99,11 @@ public class FormPanel extends JPanel {
         Border outerBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
         setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
         
+        layoutComponents();
+    }
+    
+    private void layoutComponents() {
+        
         setLayout(new GridBagLayout());
         
         GridBagConstraints gc = new GridBagConstraints();
@@ -96,8 +112,8 @@ public class FormPanel extends JPanel {
         
         ///// First row /////
         // 0, 0
-        gc.gridx = 0;
         gc.gridy = 0;
+        gc.gridx = 0;
         gc.weightx = 1;                                                             // Relative width of cell
         gc.weighty = 0.1;                                                           // Relative height of cell
         gc.anchor = GridBagConstraints.LINE_END;                                    // Align cell right
@@ -105,18 +121,17 @@ public class FormPanel extends JPanel {
         add(nameLabel, gc);
         
         // 1, 0
-        gc.gridx = 1;
-        gc.gridy = 0;                                                               // Not needed, for clarity
+        gc.gridx = 1;                                                             // Not needed, for clarity
         gc.weightx = 1;                                                             // Relative width of cell
         gc.weighty = 0.1;                                                           // Relative height of cells
         gc.anchor = GridBagConstraints.LINE_START;
         gc.insets = new Insets(0, 0, 0, 0);                                         // Reset
         add(nameField,gc);
         
-        ///// Second row /////
+        ///// Next row /////
         // 0, 1
+        gc.gridy++;
         gc.gridx = 0;
-        gc.gridy = 1;
         gc.weightx = 1;                                                             // Relative width of cell
         gc.weighty = 0.1; 
         gc.anchor = GridBagConstraints.LINE_END;
@@ -125,30 +140,56 @@ public class FormPanel extends JPanel {
         
         // 1, 1
         gc.gridx = 1;
-        gc.gridy = 1;
         gc.weightx = 1;                                                             // Relative width of cell
         gc.weighty = 0.1; 
         gc.anchor = GridBagConstraints.LINE_START;
         gc.insets = new Insets(0, 0, 0, 0);
         add(occupationField, gc);
         
-        ///// Third row ///// JList
+        ///// next row ///// JList
+        // 0, 2
+        gc.gridy++;
+        gc.gridx = 0;
+        gc.weightx = 1;                                                             // Relative width of cell
+        gc.weighty = 0.1;                                                           // Relative height of cell
+        gc.anchor = GridBagConstraints.FIRST_LINE_END;                                    // Align cell right
+        gc.insets = new Insets(7, 0, 0, 5);                                         // Add spacing between label and field
+        add(new JLabel("Age:"), gc);
+        
         // 1, 2
         gc.gridx = 1;
-        gc.gridy = 2;
         gc.weightx = 1;
-        gc.weighty = 0.2;                                                           // Reative height
+        gc.weighty = 0.1;                                                           // Reative height
         gc.anchor = GridBagConstraints.FIRST_LINE_START;                            // Top right of cell
-        gc.insets = new Insets(10, 0, 0, 0);                                        // Space ageList down a little
+        gc.insets = new Insets(7, 0, 0, 0);                                        // Space ageList down a little
         add(ageList, gc);
         
-        ///// Fourth row ///// (OK)
+        ///// next row ///// JComboBox
+        // 0, 3
+        gc.gridy++;
+        gc.gridx = 0;
+        gc.weightx = 1;                                                             // Relative width of cell
+        gc.weighty = 0.1;                                                           // Relative height of cell
+        gc.anchor = GridBagConstraints.FIRST_LINE_END;                                    // Align cell right
+        gc.insets = new Insets(7, 0, 0, 5);                                         // Add spacing between label and field
+        add(new JLabel("Employment:"), gc);
+        
         // 1, 3
         gc.gridx = 1;
-        gc.gridy = 3;
+        gc.weightx = 1;
+        gc.weighty = 0.1;                                                           // Reative height, bigger cell
+        gc.anchor = GridBagConstraints.FIRST_LINE_START;                            // Top right of cell
+//        gc.anchor = GridBagConstraints.LAST_LINE_START;                             // Bottom right of cell
+        gc.insets = new Insets(0, 0, 0, 0);                                        // Reset
+        add(empCombo, gc);
+        
+        ///// next row ///// (OK)
+        // 1, 4
+        gc.gridy++;
+        gc.gridx = 1;
         gc.weightx = 1;
         gc.weighty = 2.0;                                                           // Reative height, bigger cell
-        gc.anchor = GridBagConstraints.FIRST_LINE_START;                            // Top right of cell
+        gc.anchor = GridBagConstraints.LINE_START;                            // Top right of cell
 //        gc.anchor = GridBagConstraints.LAST_LINE_START;                             // Bottom right of cell
         gc.insets = new Insets(0, 0, 0, 0);                                        // Reset
         add(okBtn, gc);

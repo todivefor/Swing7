@@ -49,10 +49,11 @@ public class MainFrame extends JFrame {
                 String name = e.getName();
                 String occupation = e.getOccupation();
                 int ageCat = e.getAgeCategory();
+                String empCat = e.getEmploymentCategory();
                 
                 // Append data to TextArea in TextPanel
                 textPanel.appendText(name + ": " + occupation + ": " + 
-                        ageCat + "\n");
+                        ageCat + ", " + empCat + "\n");
             }
         });
         
