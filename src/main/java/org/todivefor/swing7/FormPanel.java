@@ -14,6 +14,7 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -34,6 +35,9 @@ public class FormPanel extends JPanel {
     private JButton okBtn;
     private JList ageList;
     private JComboBox empCombo;
+    private JCheckBox citizenCheck;
+    private JLabel taxLabel;
+    private JTextField taxField;
     
     private FormListener formListener;
     
@@ -49,6 +53,9 @@ public class FormPanel extends JPanel {
         occupationField = new JTextField(10);
         ageList = new JList();
         empCombo = new JComboBox();
+        citizenCheck = new JCheckBox();
+        taxLabel = new JLabel("Tax ID: ");
+        taxField = new JTextField(10);
         
         // Setup list box
         DefaultListModel ageModel = new DefaultListModel();
@@ -68,6 +75,20 @@ public class FormPanel extends JPanel {
         empCombo.setModel(empModel);
         empCombo.setPreferredSize(new Dimension(130, 35));
         
+        // Setup tax id
+        taxLabel.setEnabled(false);
+        taxField.setEnabled(false);
+        
+        citizenCheck.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                boolean isTicked = citizenCheck.isSelected();
+                taxLabel.setEnabled(isTicked);
+                taxField.setEnabled(isTicked);
+            }
+            
+        });
         okBtn = new JButton("OK");
         
         okBtn.addActionListener(new ActionListener() {
@@ -79,13 +100,15 @@ public class FormPanel extends JPanel {
                 String occupation = occupationField.getText();                      // Get occupation
                 AgeCategory ageCat = (AgeCategory) ageList.getSelectedValue();      // From JList
                 String empCat = (String) empCombo.getSelectedItem();                // From JComboBox
+                boolean usCitizen = citizenCheck.isSelected();
+                String taxId = taxField.getText();
                 
 //                System.out.println(ageCat.getId());                                 // Debug
 //                System.out.println(empCat);                                         // Debug
                 
                 // Save input data as EventObject
                 FormEvent ev = new FormEvent(this, name, occupation, 
-                        ageCat.getId(), empCat);
+                        ageCat.getId(), empCat, taxId, usCitizen);
                 
                 // Trigger event in MainFrame
                 if (formListener != null) {
@@ -182,6 +205,42 @@ public class FormPanel extends JPanel {
 //        gc.anchor = GridBagConstraints.LAST_LINE_START;                             // Bottom right of cell
         gc.insets = new Insets(0, 0, 0, 0);                                        // Reset
         add(empCombo, gc);
+        
+        ///// next row ///// JCheckBox
+        // 0, 4
+        gc.gridy++;
+        gc.gridx = 0;
+        gc.weightx = 1;                                                             // Relative width of cell
+        gc.weighty = 0.1;                                                           // Relative height of cell
+        gc.anchor = GridBagConstraints.FIRST_LINE_END;                                    // Align cell right
+        gc.insets = new Insets(2, 0, 0, 5);                                         // Add spacing between label and field
+        add(new JLabel("US Citizen:"), gc);
+        
+        // 1, 4
+        gc.gridx = 1;
+        gc.weightx = 1;
+        gc.weighty = 0.1;                                                           // Reative height, bigger cell
+        gc.anchor = GridBagConstraints.FIRST_LINE_START;                            // Top right of cell
+        gc.insets = new Insets(0, 0, 0, 0);                                        // Reset
+        add(citizenCheck, gc);
+        
+        ///// next row ///// Social
+        // 0, 4
+        gc.gridy++;
+        gc.gridx = 0;
+        gc.weightx = 1;                                                             // Relative width of cell
+        gc.weighty = 0.1;                                                           // Relative height of cell
+        gc.anchor = GridBagConstraints.FIRST_LINE_END;                                    // Align cell right
+        gc.insets = new Insets(2, 0, 0, 5);                                         // Add spacing between label and field
+        add(taxLabel, gc);
+        
+        // 1, 4
+        gc.gridx = 1;
+        gc.weightx = 1;
+        gc.weighty = 0.1;                                                           // Reative height, bigger cell
+        gc.anchor = GridBagConstraints.FIRST_LINE_START;                            // Top right of cell
+        gc.insets = new Insets(0, 0, 0, 0);                                        // Reset
+        add(taxField, gc);       
         
         ///// next row ///// (OK)
         // 1, 4

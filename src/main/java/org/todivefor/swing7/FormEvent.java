@@ -16,6 +16,8 @@ public class FormEvent extends EventObject {
     private String occupation;
     private int ageCategory;
     private String empCat;
+    private String taxId;
+    private boolean usCitizen;
     
     /**
      * Constructor to save data from the JTextFields in FormPanel
@@ -26,13 +28,15 @@ public class FormEvent extends EventObject {
      * @param empCat 
      */
     public FormEvent(Object source, String name, String occupation, int ageCat,
-            String empCat) {
+            String empCat, String taxId, Boolean usCitizen) {
         
         super(source);
         this.name = name;
         this.occupation = occupation;
         this.ageCategory = ageCat;
         this.empCat = empCat;
+        this.taxId = taxId;
+        this.usCitizen = usCitizen;
     }
     
     public String getName() {
@@ -63,6 +67,16 @@ public class FormEvent extends EventObject {
     public String getEmploymentCategory() {
         
         return empCat;
+    }
+
+    public String getTaxId() {
+        
+        return taxId;
+    }
+
+    public boolean isUsCitizen() {
+        
+        return usCitizen;
     }
     
 }
