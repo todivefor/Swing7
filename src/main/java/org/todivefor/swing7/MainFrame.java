@@ -20,7 +20,7 @@ public class MainFrame extends JFrame {
     
     public MainFrame() {
 
-        super("Hellow World!");
+        super("Hello World!");
         
         setLayout(new BorderLayout());
         
@@ -54,6 +54,7 @@ public class MainFrame extends JFrame {
                 // Append data to TextArea in TextPanel
                 textPanel.appendText(name + ": " + occupation + ": " + 
                         ageCat + ", " + empCat + "\n");
+//                System.out.println(e.getGender());                                  // debug
             }
         });
         

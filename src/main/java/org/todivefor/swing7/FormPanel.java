@@ -11,6 +11,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -19,6 +20,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
@@ -38,6 +40,9 @@ public class FormPanel extends JPanel {
     private JCheckBox citizenCheck;
     private JLabel taxLabel;
     private JTextField taxField;
+    private JRadioButton maleRadio;
+    private JRadioButton femaleRadio;
+    private ButtonGroup genderGroup;
     
     private FormListener formListener;
     
@@ -56,6 +61,16 @@ public class FormPanel extends JPanel {
         citizenCheck = new JCheckBox();
         taxLabel = new JLabel("Tax ID: ");
         taxField = new JTextField(10);
+        maleRadio = new JRadioButton("Male");
+        femaleRadio = new JRadioButton("Female");
+        genderGroup = new ButtonGroup();
+        
+        // Setup radio buttons;
+        genderGroup.add(maleRadio);                                                 // Add to radio
+        genderGroup.add(femaleRadio);                                               // button group
+        maleRadio.setSelected(true);
+        maleRadio.setActionCommand("male");
+        femaleRadio.setActionCommand("female");
         
         // Setup list box
         DefaultListModel ageModel = new DefaultListModel();
@@ -102,13 +117,15 @@ public class FormPanel extends JPanel {
                 String empCat = (String) empCombo.getSelectedItem();                // From JComboBox
                 boolean usCitizen = citizenCheck.isSelected();
                 String taxId = taxField.getText();
+                String gender = genderGroup.getSelection().getActionCommand();      // "Male"/"Femal"
                 
 //                System.out.println(ageCat.getId());                                 // Debug
 //                System.out.println(empCat);                                         // Debug
-                
+//                System.out.println(gender);                                         // Debug                
+
                 // Save input data as EventObject
                 FormEvent ev = new FormEvent(this, name, occupation, 
-                        ageCat.getId(), empCat, taxId, usCitizen);
+                        ageCat.getId(), empCat, taxId, usCitizen, gender);
                 
                 // Trigger event in MainFrame
                 if (formListener != null) {
@@ -202,8 +219,8 @@ public class FormPanel extends JPanel {
         gc.weightx = 1;
         gc.weighty = 0.1;                                                           // Reative height, bigger cell
         gc.anchor = GridBagConstraints.FIRST_LINE_START;                            // Top right of cell
-//        gc.anchor = GridBagConstraints.LAST_LINE_START;                             // Bottom right of cell
-        gc.insets = new Insets(0, 0, 0, 0);                                        // Reset
+//        gc.anchor = GridBagConstraints.LAST_LINE_START;                           // Bottom right of cell
+        gc.insets = new Insets(0, 0, 0, 0);                                         // Reset
         add(empCombo, gc);
         
         ///// next row ///// JCheckBox
@@ -212,7 +229,7 @@ public class FormPanel extends JPanel {
         gc.gridx = 0;
         gc.weightx = 1;                                                             // Relative width of cell
         gc.weighty = 0.1;                                                           // Relative height of cell
-        gc.anchor = GridBagConstraints.FIRST_LINE_END;                                    // Align cell right
+        gc.anchor = GridBagConstraints.FIRST_LINE_END;                              // Align cell right
         gc.insets = new Insets(2, 0, 0, 5);                                         // Add spacing between label and field
         add(new JLabel("US Citizen:"), gc);
         
@@ -221,11 +238,11 @@ public class FormPanel extends JPanel {
         gc.weightx = 1;
         gc.weighty = 0.1;                                                           // Reative height, bigger cell
         gc.anchor = GridBagConstraints.FIRST_LINE_START;                            // Top right of cell
-        gc.insets = new Insets(0, 0, 0, 0);                                        // Reset
+        gc.insets = new Insets(0, 0, 0, 0);                                         // Reset
         add(citizenCheck, gc);
         
         ///// next row ///// Social
-        // 0, 4
+        // 0, 5
         gc.gridy++;
         gc.gridx = 0;
         gc.weightx = 1;                                                             // Relative width of cell
@@ -234,23 +251,51 @@ public class FormPanel extends JPanel {
         gc.insets = new Insets(2, 0, 0, 5);                                         // Add spacing between label and field
         add(taxLabel, gc);
         
-        // 1, 4
+        // 1, 5
         gc.gridx = 1;
         gc.weightx = 1;
         gc.weighty = 0.1;                                                           // Reative height, bigger cell
         gc.anchor = GridBagConstraints.FIRST_LINE_START;                            // Top right of cell
-        gc.insets = new Insets(0, 0, 0, 0);                                        // Reset
-        add(taxField, gc);       
+        gc.insets = new Insets(0, 0, 0, 0);                                         // Reset
+        add(taxField, gc);
         
+        ///// next row ///// Radio button (Male)
+        // 0, 6
+        gc.gridy++;
+        gc.gridx = 0;
+        gc.weightx = 1;                                                             // Relative width of cell
+        gc.weighty = 0.05;                                                          // Change to move male, female closer
+        gc.anchor = GridBagConstraints.LINE_END;                                    // Align cell right
+        gc.insets = new Insets(2, 0, 0, 5);                                         // Add spacing between label and field
+        add(new JLabel("Gender:"), gc);
+        
+        // 1, 6
+        gc.gridx = 1;
+        gc.weightx = 1;
+        gc.weighty = 0.05;                                                           // Reative height, bigger cell
+        gc.anchor = GridBagConstraints.FIRST_LINE_START;                            // Top right of cell
+        gc.insets = new Insets(0, 0, 0, 0);                                         // Reset
+        add(maleRadio, gc);
+        
+        ///// next row ///// Radio button (Female)
+        // 1, 7
+        gc.gridy++;
+        gc.gridx = 1;
+        gc.weightx = 1;
+        gc.weighty = 0.05;                                                           // Reative height, bigger cell
+        gc.anchor = GridBagConstraints.FIRST_LINE_START;                            // Top right of cell
+        gc.insets = new Insets(0, 0, 0, 0);                                         // Reset
+        add(femaleRadio, gc);   
+
         ///// next row ///// (OK)
         // 1, 4
         gc.gridy++;
         gc.gridx = 1;
         gc.weightx = 1;
         gc.weighty = 2.0;                                                           // Reative height, bigger cell
-        gc.anchor = GridBagConstraints.LINE_START;                            // Top right of cell
-//        gc.anchor = GridBagConstraints.LAST_LINE_START;                             // Bottom right of cell
-        gc.insets = new Insets(0, 0, 0, 0);                                        // Reset
+        gc.anchor = GridBagConstraints.LINE_START;                                  // Top right of cell
+//        gc.anchor = GridBagConstraints.LAST_LINE_START;                           // Bottom right of cell
+        gc.insets = new Insets(0, 0, 0, 0);                                         // Reset
         add(okBtn, gc);
     }
     
