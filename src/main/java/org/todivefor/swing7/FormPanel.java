@@ -10,6 +10,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -53,8 +54,10 @@ public class FormPanel extends JPanel {
         setPreferredSize(dim);
         
         nameLabel = new JLabel("Name: ");
+        nameLabel.setDisplayedMnemonic(KeyEvent.VK_N);
         occupationLabel = new JLabel("Occupation: ");
         nameField = new JTextField(10);                                             // 10 characters
+        nameLabel.setLabelFor(nameField);
         occupationField = new JTextField(10);
         ageList = new JList();
         empCombo = new JComboBox();
@@ -105,6 +108,8 @@ public class FormPanel extends JPanel {
             
         });
         okBtn = new JButton("OK");
+        
+        okBtn.setMnemonic(KeyEvent.VK_O);
         
         okBtn.addActionListener(new ActionListener() {
             @Override
