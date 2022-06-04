@@ -5,6 +5,9 @@
 package org.todivefor.swing7;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -108,7 +111,8 @@ public class MainFrame extends JFrame {
         
         JMenu showMenu = new JMenu("Show");
         
-        JMenuItem showFormItem = new JMenuItem("Person Form");
+        JCheckBoxMenuItem showFormItem = new JCheckBoxMenuItem("Person Form");
+        showFormItem.setSelected(true);
         
         windowMenu.add(showMenu);
        
@@ -116,6 +120,18 @@ public class MainFrame extends JFrame {
 
         menuBar.add(fileMenu);
         menuBar.add(windowMenu);
+        
+        showFormItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ev) {
+                
+                JCheckBoxMenuItem menuItem = (JCheckBoxMenuItem)ev.getSource();
+                formPanel.setVisible(menuItem.isSelected());
+//                formPanel.setVisible(showFormItem.isSelected());
+            }
+            
+        });
+        
         return menuBar;
     }
 }
