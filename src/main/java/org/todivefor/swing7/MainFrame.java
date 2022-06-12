@@ -5,6 +5,7 @@
 package org.todivefor.swing7;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -13,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
@@ -85,6 +87,7 @@ public class MainFrame extends JFrame {
 //        add(btn, BorderLayout.SOUTH);
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setMinimumSize(new Dimension(500, 400));                                    // Minimum so FormPanel won't get too small
         setSize(600, 500);
         setLocationRelativeTo(null);
         setVisible(true);
@@ -124,7 +127,20 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 
-                System.exit(0);
+/*              This is just a demo of .showInputDialog
+                
+                String text = JOptionPane.showInputDialog(
+                        MainFrame.this,  "Enter your username.",
+                        "Enter User Name", JOptionPane.OK_OPTION | 
+                                JOptionPane.QUESTION_MESSAGE);
+                System.out.println(text);
+*/
+                int action = JOptionPane.showConfirmDialog(
+                        MainFrame.this,  "Do you really want to exit?",
+                        "Confirm Exit", JOptionPane.OK_CANCEL_OPTION);
+                if (action == JOptionPane.OK_OPTION) {
+                    System.exit(0);
+                }
             }
         });
         

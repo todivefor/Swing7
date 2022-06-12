@@ -4,6 +4,14 @@
     <groupId>org.todivefor.swing7</groupId>
     <artifactId>Swing7</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <dependencies>
+        <dependency>
+            <groupId>org.todivefor.laf</groupId>
+            <artifactId>LAF</artifactId>
+            <version>1.0</version>
+            <type>jar</type>
+        </dependency>
+    </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>18</maven.compiler.source>
