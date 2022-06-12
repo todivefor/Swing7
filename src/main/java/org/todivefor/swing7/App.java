@@ -5,6 +5,7 @@
 package org.todivefor.swing7;
 
 import javax.swing.SwingUtilities;
+import org.todivefor.laf.LAF;
 
 /**
  *
@@ -21,6 +22,7 @@ public class App {
             
             @Override
             public void run() {
+                LAF.initLookAndFeel("Metal", "DefaultMetal");
                 new MainFrame();
             }
 
