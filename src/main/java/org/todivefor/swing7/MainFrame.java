@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -28,6 +29,7 @@ public class MainFrame extends JFrame {
 //    private JButton btn;
     private final ToolBar toolBar;
     private final FormPanel formPanel;
+    private final JFileChooser fileChooser;
     
     public MainFrame() {
 
@@ -38,6 +40,8 @@ public class MainFrame extends JFrame {
         toolBar = new ToolBar();
         
         textPanel = new TextPanel();
+        
+        fileChooser = new JFileChooser();
         
         setJMenuBar(createMenuBar());
         
@@ -108,16 +112,32 @@ public class MainFrame extends JFrame {
         fileMenu.setMnemonic(KeyEvent.VK_F);
         
         JMenuItem exportDataItem = new JMenuItem("Export Data...");
+        
         exportDataItem.setMnemonic(KeyEvent.VK_E);
         exportDataItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
-                System.out.println("EXPORT!");
+               
+                if (fileChooser.showSaveDialog(MainFrame.this) == 
+                        JFileChooser.APPROVE_OPTION) {
+                    System.out.println(fileChooser.getSelectedFile());
+                }
             }
             
         });
         JMenuItem importDataItem = new JMenuItem("Import Data...");
+        
+        importDataItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               
+                if (fileChooser.showOpenDialog(MainFrame.this) == 
+                        JFileChooser.APPROVE_OPTION) {
+                    System.out.println(fileChooser.getSelectedFile());
+                }
+            }
+            
+        });
         
         JMenuItem exitItem = new JMenuItem("Exit");
         exitItem.setMnemonic(KeyEvent.VK_X);
