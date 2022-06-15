@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package org.todivefor.swing7;
+package org.todivefor.swing7.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -49,7 +49,7 @@ public class MainFrame extends JFrame {
         /**
          * 
          */
-        toolBar.setStringListener(new org.todivefor.swing7.StringListener() {
+        toolBar.setStringListener(new org.todivefor.swing7.gui.StringListener() {
             @Override
             public void textEmitted(String text) {
                 
