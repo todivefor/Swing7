@@ -4,6 +4,7 @@
  */
 package org.todivefor.swing7.gui;
 
+import Controller.Controller;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -30,6 +31,7 @@ public class MainFrame extends JFrame {
     private final ToolBar toolBar;
     private final FormPanel formPanel;
     private final JFileChooser fileChooser;
+    private final Controller controller;
     
     public MainFrame() {
 
@@ -40,6 +42,8 @@ public class MainFrame extends JFrame {
         toolBar = new ToolBar();
         
         textPanel = new TextPanel();
+        
+        controller = new Controller();
         
         fileChooser = new JFileChooser();
         fileChooser.addChoosableFileFilter(new PersonFileFilter());
@@ -64,15 +68,17 @@ public class MainFrame extends JFrame {
             public void formEventOcurred(FormEvent e) {
                 
                 // Get input data from EventObject
-                String name = e.getName();
-                String occupation = e.getOccupation();
-                int ageCat = e.getAgeCategory();
-                String empCat = e.getEmploymentCategory();
-                
-                // Append data to TextArea in TextPanel
-                textPanel.appendText(name + ": " + occupation + ": " + 
-                        ageCat + ", " + empCat + "\n");
+//                String name = e.getName();
+//                String occupation = e.getOccupation();
+//                int ageCat = e.getAgeCategory();
+//                String empCat = e.getEmploymentCategory();
+//                
+//                // Append data to TextArea in TextPanel
+//                textPanel.appendText(name + ": " + occupation + ": " + 
+//                        ageCat + ", " + empCat + "\n");
 //                System.out.println(e.getGender());                                  // debug
+
+                controller.addPerson(e);
             }
         });
         

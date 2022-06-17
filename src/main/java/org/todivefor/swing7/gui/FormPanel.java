@@ -91,6 +91,7 @@ public class FormPanel extends JPanel {
         empModel.addElement("Self-Employed");
         empModel.addElement("Unmployed");
         empCombo.setModel(empModel);
+        empCombo.setEditable(true);
         empCombo.setPreferredSize(new Dimension(130, 35));
         
         // Setup tax id
