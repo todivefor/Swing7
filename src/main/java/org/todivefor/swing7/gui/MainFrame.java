@@ -4,7 +4,7 @@
  */
 package org.todivefor.swing7.gui;
 
-import Controller.Controller;
+import org.todivefor.swing7.Controller.Controller;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -32,6 +32,7 @@ public class MainFrame extends JFrame {
     private final FormPanel formPanel;
     private final JFileChooser fileChooser;
     private final Controller controller;
+    private TablePanel tablePanel;  
     
     public MainFrame() {
 
@@ -44,6 +45,10 @@ public class MainFrame extends JFrame {
         textPanel = new TextPanel();
         
         controller = new Controller();
+        
+        tablePanel = new TablePanel();
+        
+        tablePanel.setData(controller.getPeople());
         
         fileChooser = new JFileChooser();
         fileChooser.addChoosableFileFilter(new PersonFileFilter());
@@ -64,7 +69,7 @@ public class MainFrame extends JFrame {
         
         formPanel = new FormPanel();
         
-        formPanel.setFormListener(new FormListener() {
+        formPanel.setFormListener(new FormListener() {                              // FormPanel (OK)
             public void formEventOcurred(FormEvent e) {
                 
                 // Get input data from EventObject
@@ -78,7 +83,8 @@ public class MainFrame extends JFrame {
 //                        ageCat + ", " + empCat + "\n");
 //                System.out.println(e.getGender());                                  // debug
 
-                controller.addPerson(e);
+                controller.addPerson(e);                                            // Add to table
+                tablePanel.refresh();                                               // Table has been updated
             }
         });
         
@@ -93,7 +99,7 @@ public class MainFrame extends JFrame {
         });
         */
         add(toolBar, BorderLayout.NORTH);
-        add(textPanel, BorderLayout.CENTER);
+        add(tablePanel, BorderLayout.CENTER);
         add(formPanel, BorderLayout.WEST);
 //        add(btn, BorderLayout.SOUTH);
         

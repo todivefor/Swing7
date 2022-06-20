@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Controller;
+package org.todivefor.swing7.Controller;
 
+import java.util.List;
 import org.todivefor.swing7.gui.FormEvent;
 import org.todivefor.swing7.model.AgeCategory;
 import org.todivefor.swing7.model.Database;
@@ -22,6 +23,11 @@ public class Controller {
     public Controller() {
         
         this.db = new Database();
+    }
+    
+    public List<Person> getPeople() {
+        
+        return db.getPeople();
     }
 
     public void addPerson(FormEvent ev) {
