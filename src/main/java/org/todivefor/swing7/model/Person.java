@@ -4,11 +4,13 @@
  */
 package org.todivefor.swing7.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author peterream
  */
-public class Person {
+public class Person implements Serializable {
     
     private static int count = 0;                                                   // Person counter
     

@@ -10,6 +10,9 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -124,7 +127,7 @@ public class MainFrame extends JFrame {
         JMenu fileMenu = new JMenu("File");
         fileMenu.setMnemonic(KeyEvent.VK_F);
         
-        JMenuItem exportDataItem = new JMenuItem("Export Data...");
+        JMenuItem exportDataItem = new JMenuItem("Export Data...");                 // Export data
         
         exportDataItem.setMnemonic(KeyEvent.VK_E);
         exportDataItem.addActionListener(new ActionListener() {
@@ -133,12 +136,19 @@ public class MainFrame extends JFrame {
                
                 if (fileChooser.showSaveDialog(MainFrame.this) == 
                         JFileChooser.APPROVE_OPTION) {
-                    System.out.println(fileChooser.getSelectedFile());
+                    try {
+                        controller.saveToFile(fileChooser.getSelectedFile());
+//                    System.out.println(fileChooser.getSelectedFile());
+                    } catch (IOException ex) {
+                       JOptionPane.showMessageDialog(MainFrame.this, 
+                                "Could not save data to file.", "Save Error", 
+                                JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
             
         });
-        JMenuItem importDataItem = new JMenuItem("Import Data...");
+        JMenuItem importDataItem = new JMenuItem("Import Data...");                 // Import data
         
         importDataItem.addActionListener(new ActionListener() {
             @Override
@@ -146,7 +156,16 @@ public class MainFrame extends JFrame {
                
                 if (fileChooser.showOpenDialog(MainFrame.this) == 
                         JFileChooser.APPROVE_OPTION) {
-                    System.out.println(fileChooser.getSelectedFile());
+                    try {
+                        controller.loadFromFile(fileChooser.getSelectedFile());
+                        tablePanel.refresh();                                       // Refresh table
+//                    System.out.println(fileChooser.getSelectedFile());
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(MainFrame.this, 
+                                "Could not load data from file.", "Load Error", 
+                                JOptionPane.ERROR_MESSAGE);
+//                        ex.printStackTrace();
+                    }
                 }
             }
             
