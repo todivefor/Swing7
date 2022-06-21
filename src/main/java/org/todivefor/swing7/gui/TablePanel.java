@@ -5,8 +5,12 @@
 package org.todivefor.swing7.gui;
 
 import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.TableColumnModel;
@@ -20,12 +24,31 @@ public class TablePanel extends JPanel {
     
     private final JTable table;
     private final PersonTableModel tableModel;
+    private JPopupMenu popUp;
     
     public TablePanel() {
         
         tableModel = new PersonTableModel();
         table = new JTable(tableModel);
+        popUp = new JPopupMenu();
         
+        JMenuItem removeItem = new JMenuItem("Delete row");
+        popUp.add(removeItem);
+        /**
+         * Using (new MouseAdapter) because MouseListener interface has lots and
+         * lots of methods to implement.
+         */
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                
+                if (e.getButton() == MouseEvent.BUTTON3) {
+                    popUp.show(table, e.getX(), e.getY());
+                }
+            }
+            
+        });
+      
         setLayout(new BorderLayout());
         
         add(new JScrollPane(table), BorderLayout.CENTER);

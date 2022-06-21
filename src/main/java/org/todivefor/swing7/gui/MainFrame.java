@@ -149,6 +149,9 @@ public class MainFrame extends JFrame {
         });
         JMenuItem importDataItem = new JMenuItem("Import Data...");                 // Import data
         
+        importDataItem.setAccelerator(KeyStroke.getKeyStroke(
+                KeyEvent.VK_I, ActionEvent.META_MASK));
+        
         importDataItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
