@@ -11,8 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -50,6 +48,7 @@ public class MainFrame extends JFrame {
         controller = new Controller();
         
         tablePanel = new TablePanel();
+        tablePanel.removeByColumnName(null);                                        // Remove column
         
         tablePanel.setData(controller.getPeople());
         
@@ -86,7 +85,7 @@ public class MainFrame extends JFrame {
 //                        ageCat + ", " + empCat + "\n");
 //                System.out.println(e.getGender());                                  // debug
 
-                controller.addPerson(e);                                            // Add to table
+                controller.addPerson(e);                                            // Add to table   
                 tablePanel.refresh();                                               // Table has been updated
             }
         });

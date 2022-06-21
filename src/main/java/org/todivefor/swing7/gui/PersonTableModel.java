@@ -71,4 +71,15 @@ public class PersonTableModel extends AbstractTableModel {
         }
         return null;                                                                // Shouldn't happen
     }
+
+    /**
+     * Return names of columns.
+     * @return 
+     */
+    public String[] getColNames() {
+        
+        return colNames;
+    }
+    
+    
 }
