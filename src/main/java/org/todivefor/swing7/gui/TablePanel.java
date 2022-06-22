@@ -5,6 +5,8 @@
 package org.todivefor.swing7.gui;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -40,11 +42,28 @@ public class TablePanel extends JPanel {
          */
         table.addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {                                // Mouse press
                 
-                if (e.getButton() == MouseEvent.BUTTON3) {
-                    popUp.show(table, e.getX(), e.getY());
+                int row = table.rowAtPoint(e.getPoint());                           // Get row
+
+                table.getSelectionModel().setSelectionInterval(row, row);           // Select row
+                
+                if (e.getButton() == MouseEvent.BUTTON3) {                          // Right click?
+                    popUp.show(table, e.getX(), e.getY());                          // Yes, show "Delete row"
                 }
+            }
+            
+        });
+        
+        /**
+         * When "Delete row" JMenuItem is clicked.
+         */
+        removeItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                int row = table.getSelectedRow();                                   // Selected row
+                System.out.println(row);                                            // Debug
             }
             
         });
