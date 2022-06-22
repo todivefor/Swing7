@@ -106,4 +106,9 @@ public class Controller {
         
         db.loadFromFile(file);
     }
+
+    public void removePerson(int row) {
+        
+        db.removePerson(row);                                                       // Remove person from people
+    }
 }

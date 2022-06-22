@@ -52,6 +52,16 @@ public class MainFrame extends JFrame {
         
         tablePanel.setData(controller.getPeople());
         
+        tablePanel.setPersonTableListener(new PersonTableListener() {               // "Delete row" from TablePanel
+            
+            @Override
+            public void removePerson(int row) {
+                
+                controller.removePerson(row);
+//                tablePanel.refresh();                                               // Show changes
+            }
+        });
+        
         fileChooser = new JFileChooser();
         fileChooser.addChoosableFileFilter(new PersonFileFilter());
         
@@ -60,7 +70,7 @@ public class MainFrame extends JFrame {
         /**
          * 
          */
-        toolBar.setStringListener(new org.todivefor.swing7.gui.StringListener() {
+        toolBar.setStringListener(new StringListener() {
             @Override
             public void textEmitted(String text) {
                 
@@ -72,18 +82,8 @@ public class MainFrame extends JFrame {
         formPanel = new FormPanel();
         
         formPanel.setFormListener(new FormListener() {                              // FormPanel (OK)
+            @Override
             public void formEventOcurred(FormEvent e) {
-                
-                // Get input data from EventObject
-//                String name = e.getName();
-//                String occupation = e.getOccupation();
-//                int ageCat = e.getAgeCategory();
-//                String empCat = e.getEmploymentCategory();
-//                
-//                // Append data to TextArea in TextPanel
-//                textPanel.appendText(name + ": " + occupation + ": " + 
-//                        ageCat + ", " + empCat + "\n");
-//                System.out.println(e.getGender());                                  // debug
 
                 controller.addPerson(e);                                            // Add to table   
                 tablePanel.refresh();                                               // Table has been updated

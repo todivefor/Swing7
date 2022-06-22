@@ -27,6 +27,7 @@ public class TablePanel extends JPanel {
     private final JTable table;
     private final PersonTableModel tableModel;
     private JPopupMenu popUp;
+    private PersonTableListener listener;
     
     public TablePanel() {
         
@@ -56,14 +57,18 @@ public class TablePanel extends JPanel {
         });
         
         /**
-         * When "Delete row" JMenuItem is clicked.
+         * When "Delete row" JMenuItem is clicked. Remove person from people,
+         * remove person from table.
          */
-        removeItem.addActionListener(new ActionListener() {
+        removeItem.addActionListener(new ActionListener() {                         // "Delete row"
             @Override
             public void actionPerformed(ActionEvent e) {
                 
                 int row = table.getSelectedRow();                                   // Selected row
-                System.out.println(row);                                            // Debug
+                if (listener != null) {
+                    listener.removePerson(row);                                     // Remove from people
+                    tableModel.fireTableRowsDeleted(row, row);                      // Remove from table
+                }
             }
             
         });
@@ -111,5 +116,10 @@ public class TablePanel extends JPanel {
                 removeByColumnNumber(col);
             }
         }
+    }
+
+    void setPersonTableListener(PersonTableListener listener) {
+        
+        this.listener = listener;
     }
 }
