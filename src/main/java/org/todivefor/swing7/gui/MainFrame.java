@@ -217,7 +217,6 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 
-                prefsDialog.setLocationRelativeTo(null);                            // Center
                 prefsDialog.setVisible(true);
             }
             
