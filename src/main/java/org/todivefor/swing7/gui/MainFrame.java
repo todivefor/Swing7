@@ -238,6 +238,9 @@ public class MainFrame extends JFrame {
         
         JMenuItem prefsItem = new JMenuItem("Preferences...");
         
+        prefsItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, 
+                ActionEvent.META_MASK));
+        
         prefsItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
