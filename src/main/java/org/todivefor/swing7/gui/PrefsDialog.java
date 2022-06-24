@@ -30,6 +30,7 @@ public class PrefsDialog extends JDialog {
     private final SpinnerNumberModel spinnerModel;
     private JTextField userField;
     private JPasswordField passwordField;
+    private PrefsListener prefsListener;
     
     public PrefsDialog(JFrame parent) {
         
@@ -112,39 +113,62 @@ public class PrefsDialog extends JDialog {
         gc.insets = new Insets(0, 0, 10, 0);                                        // Bottom
         add(okButton, gc);
         
-        gc.gridx++;                                                                  // (Cancel)
+        gc.gridx++;                                                                 // (Cancel)
         gc.weighty = 3.0;
         gc.weightx = 0.3;                                                           // Buttons closer together
         gc.anchor = GridBagConstraints.LAST_LINE_END;
         gc.insets = new Insets(0, 0, 10, 10);                                       // Bottom and right
         add(cancelButton, gc);
         
-        okButton.addActionListener(new ActionListener() {
+        okButton.addActionListener(new ActionListener() {                           // (OK) clicked
             @Override
             public void actionPerformed(ActionEvent e) {
                 
-                int value = (int)portSpinner.getValue();
+                int port = (int)portSpinner.getValue();
                 String user = userField.getText();
                 char[] password = passwordField.getPassword();
                 
-                System.out.println(user + ": " + new String(password));
-                
-                System.out.println(value);                                          // Debug
-                setVisible(false);
+                if (prefsListener != null) {
+                    prefsListener.prefsSet(user, new String(password), port);       // Pass prefs to MainFrame
+                }
+
+                setVisible(false);                                                  // Close PrefsDialog
             }
             
         });
         
-        cancelButton.addActionListener(new ActionListener() {
+        cancelButton.addActionListener(new ActionListener() {                       // (Cancel) clicked
             @Override
             public void actionPerformed(ActionEvent e) {
                 
-                setVisible(false);
+                setVisible(false);                                                  // Close PrefsDialog
             }
             
         });
         setSize(400, 300);
         setLocationRelativeTo(parent);
     }
+
+    /**
+     * Set passed information in the fields of the display. 
+     * @param user
+     * @param password
+     * @param port 
+     */
+    void setDefaults(String user, String password, int port) {
+        
+        userField.setText(user);
+        passwordField.setText(password);
+        portSpinner.setValue(port);
+    }
     
+    /**
+     * 
+     * @param prefsListener 
+     */
+    void setPrefsListener(PrefsListener prefsListener) {
+
+        this.prefsListener = prefsListener;
+
+    }
 }

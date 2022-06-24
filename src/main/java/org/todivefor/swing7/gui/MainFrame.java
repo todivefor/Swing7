@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.prefs.Preferences;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -34,7 +35,8 @@ public class MainFrame extends JFrame {
     private final JFileChooser fileChooser;
     private final Controller controller;
     private TablePanel tablePanel;
-    private PrefsDialog prefsDialog;
+    private final PrefsDialog prefsDialog;
+    private Preferences prefs;
     
     public MainFrame() {
 
@@ -52,6 +54,8 @@ public class MainFrame extends JFrame {
         
         prefsDialog = new PrefsDialog(this);
         
+        prefs = Preferences.userRoot().node("db");                                  // Set prfs node to "db"
+        
         tablePanel.removeByColumnName(null);                                        // Remove column
         
         tablePanel.setData(controller.getPeople());
@@ -62,9 +66,30 @@ public class MainFrame extends JFrame {
             public void removePerson(int row) {
                 
                 controller.removePerson(row);
-//                tablePanel.refresh();                                               // Show changes
             }
         });
+        
+        prefsDialog.setPrefsListener(new PrefsListener() {                          // PrefsDialog (OK)
+            
+            @Override
+            public void prefsSet(String user, String password, int port) {
+                
+                prefs.put("user", user);
+                prefs.put("password", password);
+                prefs.putInt("port", port);
+            }
+            
+        });
+
+         // Get user, password, port or their default from Preferences
+
+        String user = prefs.get("user", "");                                        // from prefs user / ""
+        String password = prefs.get("password", "");                                // from prefs password / ""
+        int port = prefs.getInt("port", 3306);                                      // from prefs port / 3306
+        
+        // Set in PrefsDialog fields
+        prefsDialog.setDefaults(user, password, port);                              // Set fields in PrefsDialog
+
         
         fileChooser = new JFileChooser();
         fileChooser.addChoosableFileFilter(new PersonFileFilter());
