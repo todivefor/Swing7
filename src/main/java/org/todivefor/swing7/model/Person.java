@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 public class Person implements Serializable {
     
-    private static int count = 0;                                                   // Person counter
+    private static int count = 1;                                                   // Person counter
     private static final long serialVersionUID = 1L;                                // Video 29 noted (explanation)
     
     private int id;                                                                 // Unique ID in DB
