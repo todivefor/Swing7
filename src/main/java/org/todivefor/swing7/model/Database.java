@@ -152,25 +152,62 @@ public class Database {
 
     /**
      * Saves people array to DB.
+     * Get count of people on DB with id. If id not on DB (countID = 0), do an
+     * insert into DB, otherwise do an update.
      * @throws SQLException 
      */
     public void save() throws SQLException {
 
-        String checkSQL = "select count(*) as count from people where id=?";
+        String checkSQL = "select count(*) as count from people where id=?";        // count of each ID
+                                                                                    // "as count" column heading (not needed)
         PreparedStatement checkStmt = con.prepareStatement(checkSQL);
         
+        String insertSQL = "insert into people (id, name, age, "
+                + "employment_status, tax_id, us_citizen, gender, occupation) "
+                + "values(?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement insertStmt = con.prepareStatement(insertSQL);
+        
         for (Person person: people) {
-            int id = person.getId();
-            checkStmt.setInt(1, id);
-            ResultSet checkQuery = checkStmt.executeQuery();
-            checkQuery.next();
             
-            int count = checkQuery.getInt(1);
+            // Person info
+            int id = person.getId();
+            String name = person.getName();
+            String occupation = person.getOccupation();
+            AgeCategory age = person.getAgeCategory();
+            EmploymentCategory empCat = person.getEmpCat();
+            Boolean isUS = person.isUsCitizen();
+            String taxID = person.getTaxId();
+            Gender gender = person.getGender();
+            
+            checkStmt.setInt(1, id);                                                // Set id at 1st "?" in select
+            ResultSet checkQuery = checkStmt.executeQuery();                        // Query
+            // checkQuery points just before 1st row
+            checkQuery.next();                                                      // Make 1st row current
+            
+            int countID = checkQuery.getInt(1);                                     // Get count from result
  
-            System.out.println("Count for person with ID " + id + " is " + 
-                    count);                                                         // Debug
+            int col = 1;                                                            // Column start
+            if (countID == 0) {                                                     // person(id) on DB?
+                System.out.println("Inserting person with ID: " + id);              // No, insert
+                
+                // Add person info to insert prepared statement
+                insertStmt.setInt(col++, id);
+                insertStmt.setString(col++, name);
+                insertStmt.setString(col++, age.name());                            // Returns name of enum constant
+                insertStmt.setString(col++, empCat.name());
+                insertStmt.setString(col++, taxID);
+                insertStmt.setBoolean(col++, isUS);
+                insertStmt.setString(col++, gender.name());
+                insertStmt.setString(col++, occupation);
+                
+                insertStmt.executeUpdate();
+                
+            } else {
+                System.out.println("Updating person with ID: " + id);               // Yes, update
+            }
         }
         
+        insertStmt.close();
         checkStmt.close();
     }
 }
