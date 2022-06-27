@@ -167,6 +167,12 @@ public class Database {
                 + "values(?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement insertStmt = con.prepareStatement(insertSQL);
         
+        String updateSQL = "update people SET name = ?, age = ?, "
+                + "employment_status = ?, tax_id = ?, us_citizen = ?, "
+                + "gender = ?, occupation = ? WHERE id = ?";
+//                + "values(?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement updateStmt = con.prepareStatement(updateSQL);
+        
         for (Person person: people) {
             
             // Person info
@@ -204,10 +210,23 @@ public class Database {
                 
             } else {
                 System.out.println("Updating person with ID: " + id);               // Yes, update
+                
+                // Add person info to update prepared statement
+                updateStmt.setString(col++, name);
+                updateStmt.setString(col++, age.name());                            // Returns name of enum constant
+                updateStmt.setString(col++, empCat.name());
+                updateStmt.setString(col++, taxID);
+                updateStmt.setBoolean(col++, isUS);
+                updateStmt.setString(col++, gender.name());
+                updateStmt.setString(col++, occupation);
+                updateStmt.setInt(col++, id);
+                
+                updateStmt.executeUpdate();
             }
         }
         
         insertStmt.close();
+        updateStmt.close();
         checkStmt.close();
     }
 }

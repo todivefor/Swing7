@@ -30,11 +30,11 @@ public class TestDatabase {
         Database db = new Database();
         
         db.addPerson(new Person("Peter Ream", "Pro Golfer", AgeCategory.senior, 
-                EmploymentCategory.selEmployed, "188-36-9773", true, 
+                EmploymentCategory.selEmployed, "nnn-nn-nnnn", true, 
                 Gender.male));
         
         db.addPerson(new Person("Sue", "Artist", AgeCategory.adult, 
-                EmploymentCategory.unemployed, null, false, 
+                EmploymentCategory.employed, null, false, 
                 Gender.female));
         
         try {
