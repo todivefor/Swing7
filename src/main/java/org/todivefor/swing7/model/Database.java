@@ -15,6 +15,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -228,5 +229,48 @@ public class Database {
         insertStmt.close();
         updateStmt.close();
         checkStmt.close();
+    }
+    
+    public void load() throws SQLException {
+        
+        people.clear();
+        
+        String sqlSelect = "SELECT * FROM people ORDER BY name";
+        
+//      Use this select just to remember what we are getting
+//        String sqlSelect = "SELECT id, name, age, employment_status, tax_id, "
+//                + "us_citizen, gender, occupation FROM people ORDER BY name";
+        
+        Statement selectStatement = con.createStatement();
+        
+        ResultSet results = selectStatement.executeQuery(sqlSelect);
+        
+        while (results.next()) {
+            
+            int id = results.getInt("id");
+            String name = results.getString("name");
+            String occupation = results.getString("occupation");
+            String age = results.getString("age");
+            String emp = results.getString("employment_status");
+            String tax = results.getString("tax_id");
+            boolean isUS = results.getBoolean("us_citizen");
+            String gender = results.getString("gender");
+            
+            Person person = new Person(id, name, occupation, 
+                    AgeCategory.valueOf(age), EmploymentCategory.valueOf(emp), 
+                    tax, isUS, Gender.valueOf(gender));
+            
+            people.add(person);
+            
+//            people.add(new Person(id, name, occupation, 
+//                    AgeCategory.valueOf(age), EmploymentCategory.valueOf(emp), 
+//                    tax, isUS, Gender.valueOf(gender)));
+            
+//            System.out.println(person);                                             // debug
+        }
+        
+        results.close();
+        selectStatement.close();
+        
     }
 }

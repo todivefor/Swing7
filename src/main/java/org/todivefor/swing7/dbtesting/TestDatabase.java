@@ -49,6 +49,12 @@ public class TestDatabase {
             Logger.getLogger(TestDatabase.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        try {
+            db.load();
+        } catch (SQLException ex) {
+            Logger.getLogger(TestDatabase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         db.disconnect();
     }
     

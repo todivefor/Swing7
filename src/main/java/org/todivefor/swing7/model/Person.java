@@ -40,6 +40,26 @@ public class Person implements Serializable {
         count++;                                                                    // Increment on each new Person
     }
     
+    /**
+     * Overload constructor by adding id. Call original constructor and id
+     * instead of generating on other.
+     * @param id
+     * @param name
+     * @param occupation
+     * @param ageCategory
+     * @param empCat
+     * @param taxId
+     * @param usCitizen
+     * @param gender 
+     */
+    public Person (int id, String name, String occupation, 
+            AgeCategory ageCategory, EmploymentCategory empCat, String taxId, 
+            boolean usCitizen, Gender gender) {
+        
+        this(name, occupation, ageCategory, empCat, taxId, usCitizen, gender);
+        this.id = id;                                                                 // id from DB
+    }
+    
     public int getId() {
         
         return id;
@@ -118,5 +138,16 @@ public class Person implements Serializable {
     public void setGender(Gender gender) {
         
         this.gender = gender;
+    }
+    
+    /**
+     * Partial toString for testing.
+     * @return 
+     */
+    public String toString() {
+        
+        return "ID: " + id + "\n" +
+                "Name: " + name + "\n" +
+                "Occupation: " + occupation + "\n";
     }
 }
