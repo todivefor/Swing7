@@ -6,6 +6,7 @@ package org.todivefor.swing7.Controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import org.todivefor.swing7.gui.FormEvent;
 import org.todivefor.swing7.model.AgeCategory;
@@ -110,5 +111,28 @@ public class Controller {
     public void removePerson(int row) {
         
         db.removePerson(row);                                                       // Remove person from people
+    }
+    
+    /**
+     * Save people to SQL DB.
+     */
+    public void save() throws SQLException {
+        
+        db.save();
+    }
+    
+    public void load() throws SQLException {
+        
+        db.load();
+    }
+    
+    public void connect() throws Exception {
+        
+        db.connect();
+    }
+    
+    public void disconnect() {
+        
+        db.disconnect();                                                            // Close DB
     }
 }

@@ -144,7 +144,7 @@ public class Database {
 
         if (con != null) {                                                          // Connection established?
             try {
-                con.close();                                                        // No, close
+                con.close();                                                        // Yes, close
             } catch (SQLException ex) {
                 System.out.println("Can't close connection");                       // Error
             }
@@ -197,7 +197,7 @@ public class Database {
             if (countID == 0) {                                                     // person(id) on DB?
                 System.out.println("Inserting person with ID: " + id);              // No, insert
                 
-                // Add person info to insert prepared statement
+                // Add person info to insert prepared statement by col number
                 insertStmt.setInt(col++, id);
                 insertStmt.setString(col++, name);
                 insertStmt.setString(col++, age.name());                            // Returns name of enum constant
@@ -212,7 +212,7 @@ public class Database {
             } else {
                 System.out.println("Updating person with ID: " + id);               // Yes, update
                 
-                // Add person info to update prepared statement
+                // Add person info to update prepared statement by col number
                 updateStmt.setString(col++, name);
                 updateStmt.setString(col++, age.name());                            // Returns name of enum constant
                 updateStmt.setString(col++, empCat.name());
@@ -271,6 +271,5 @@ public class Database {
         
         results.close();
         selectStatement.close();
-        
     }
 }

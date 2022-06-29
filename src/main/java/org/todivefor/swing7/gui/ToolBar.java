@@ -4,6 +4,7 @@
  */
 package org.todivefor.swing7.gui;
 
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,28 +18,31 @@ import javax.swing.JPanel;
  */
 public class ToolBar extends JPanel implements ActionListener {
 
-    private JButton helloButton;
-    private JButton goodbyeButton;
+    private JButton saveButton;
+    private JButton refreshButton;
     
-    private StringListener textListener;
+    private ToolbarListener textListener;
 
     public ToolBar() {
 
         setBorder(BorderFactory.createEtchedBorder());
-        helloButton = new JButton("Hello\n");
-        goodbyeButton = new JButton("Goodbye\n");
+        saveButton = new JButton("Save");
+        refreshButton = new JButton("Refresh");
+        
+        Dimension refreshSize = refreshButton.getPreferredSize();                   // Make buttons
+        saveButton.setPreferredSize(refreshSize);                                   // same size 
 
-        helloButton.addActionListener(this);
-        goodbyeButton.addActionListener(this);
+        saveButton.addActionListener(this);
+        refreshButton.addActionListener(this);
 
         setLayout(new FlowLayout(FlowLayout.LEFT));
 
-        add(helloButton);
-        add(goodbyeButton);
+        add(saveButton);
+        add(refreshButton);
 
     }
 
-    public void setStringListener(StringListener listener) {
+    public void setToolbarListener(ToolbarListener listener) {
         
         this.textListener = listener;
     }
@@ -47,13 +51,13 @@ public class ToolBar extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         JButton clicked = (JButton) e.getSource();
-        if (clicked == helloButton) {
+        if (clicked == saveButton) {
             if (textListener != null) {
-                textListener.textEmitted("Hello\n");
+                textListener.saveEventOccured();
             }
         } else {
             if (textListener != null) {
-                textListener.textEmitted("Goodbye\n");
+                textListener.refreshEventOccured();
             }
         }
     }

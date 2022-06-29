@@ -8,7 +8,8 @@ package org.todivefor.swing7.gui;
  *
  * @author peterream
  */
-public interface StringListener {
+public interface ToolbarListener {
     
-    public void textEmitted(String text);
+    public void saveEventOccured();
+    public void refreshEventOccured();
 }

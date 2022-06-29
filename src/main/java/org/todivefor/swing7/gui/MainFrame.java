@@ -7,10 +7,14 @@ package org.todivefor.swing7.gui;
 import org.todivefor.swing7.Controller.Controller;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
@@ -61,10 +65,10 @@ public class MainFrame extends JFrame {
         tablePanel.setData(controller.getPeople());
         
         tablePanel.setPersonTableListener(new PersonTableListener() {               // "Delete row" from TablePanel
-            
+
             @Override
             public void removePerson(int row) {
-                
+
                 controller.removePerson(row);
             }
         });
@@ -99,13 +103,38 @@ public class MainFrame extends JFrame {
         /**
          * 
          */
-        toolBar.setStringListener(new StringListener() {
+        toolBar.setToolbarListener(new ToolbarListener() {
             @Override
-            public void textEmitted(String text) {
-                
-                textPanel.appendText(text);
+            public void saveEventOccured() {
+
+                connect();
+
+                try {                                                               // Save DB
+                    controller.save();
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(MainFrame.this, 
+                            "Problem saving database.", 
+                            "Database Save Error", 
+                            JOptionPane.ERROR_MESSAGE);
+                }
             }
-            
+
+            @Override
+            public void refreshEventOccured() {
+                
+                connect();
+                
+                try {
+                    controller.load();
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(MainFrame.this, 
+                            "Problem loading database.", 
+                            "Database Load Error", 
+                            JOptionPane.ERROR_MESSAGE);
+                }
+                
+                tablePanel.refresh();
+            }
         });
         
         formPanel = new FormPanel();
@@ -139,6 +168,17 @@ public class MainFrame extends JFrame {
         setSize(600, 500);
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    private void connect() throws HeadlessException {
+        try {                                                                       // Connect DB
+            controller.connect();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(MainFrame.this,
+                    "Unable to connect database.",
+                    "Database Connection Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     /**
@@ -222,6 +262,7 @@ public class MainFrame extends JFrame {
                         MainFrame.this,  "Do you really want to exit?",
                         "Confirm Exit", JOptionPane.OK_CANCEL_OPTION);
                 if (action == JOptionPane.OK_OPTION) {
+                    controller.disconnect();                                        // Close DB
                     System.exit(0);
                 }
             }
