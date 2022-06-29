@@ -11,10 +11,11 @@ import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
@@ -164,22 +165,33 @@ public class MainFrame extends JFrame {
             }
         });
         
-        /*
-        btn = new JButton("Click Me");
-        btn.addActionListener(new ActionListener() {
+        /**
+         * When MainFram window closes, disconnect DB, dispose of window, and
+         * perform garbage collection to avoid interruption that does not
+         * occur on this system.
+         * 
+         * We use new WindowAdapter() because new WindowListener() has too many
+         * implemented methods.
+         */
+        addWindowListener(new WindowAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void windowClosing(WindowEvent e) {
                 
-                textPanel.appendText("Hello World!\n");
+//                System.out.println("Window closing");                               // Debug
+                controller.disconnect();                                            // Close DB
+                dispose();                                                          // MainFram close window
+                System.gc();                                                        // Garbage collection
             }
+            
+            
         });
-        */
+        
         add(toolBar, BorderLayout.NORTH);
         add(tablePanel, BorderLayout.CENTER);
         add(formPanel, BorderLayout.WEST);
 //        add(btn, BorderLayout.SOUTH);
         
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setMinimumSize(new Dimension(500, 400));                                    // Minimum so FormPanel won't get too small
         setSize(600, 500);
         setLocationRelativeTo(null);
@@ -279,8 +291,16 @@ public class MainFrame extends JFrame {
                         MainFrame.this,  "Do you really want to exit?",
                         "Confirm Exit", JOptionPane.OK_CANCEL_OPTION);
                 if (action == JOptionPane.OK_OPTION) {
-                    controller.disconnect();                                        // Close DB
-                    System.exit(0);
+                    
+                    WindowListener[] listeners = getWindowListeners();              // Array of listeners (we only have 1)
+                    
+                    for (WindowListener listener : listeners) {
+                        listener.windowClosing(new WindowEvent(
+                                MainFrame.this, 0));
+                    
+//                    listeners[0].windowClosing(                                     // Alternative
+//                            new WindowEvent(MainFrame.this, 0));
+                    }
                 }
             }
         });
