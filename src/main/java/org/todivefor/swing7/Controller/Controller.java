@@ -8,7 +8,9 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import javax.swing.JOptionPane;
 import org.todivefor.swing7.gui.FormEvent;
+import org.todivefor.swing7.gui.MainFrame;
 import org.todivefor.swing7.model.AgeCategory;
 import org.todivefor.swing7.model.Database;
 import org.todivefor.swing7.model.EmploymentCategory;
@@ -108,9 +110,27 @@ public class Controller {
         db.loadFromFile(file);
     }
 
-    public void removePerson(int row) {
+    /**
+     * Remove person from people. Return ID of person in row.
+     * @param row
+     * @return 
+     */
+    public int removePerson(int row) {
         
+        Person person = db.getPerson(row);                                          // Get person at row
+        int id = person.getId();                                                    // Get id
         db.removePerson(row);                                                       // Remove person from people
+        return id;                                                                  // ID of person removed
+    }
+    
+    /**
+     * Remove the person with id from the SQL DB.
+     * @param id
+     * @throws SQLException 
+     */
+    public void removePersonFromSQLDb(int id) throws SQLException {
+
+        db.deletePersonWithId(id);                                                  // Remove from DB
     }
     
     /**

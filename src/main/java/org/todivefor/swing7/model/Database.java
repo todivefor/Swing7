@@ -44,6 +44,12 @@ public class Database {
 
         people.add(person);
     }
+    
+
+    public Person getPerson(int row) {
+        
+        return people.get(row);                                                     // Person from people
+    }
 
     /**
      * Return people array.
@@ -271,5 +277,39 @@ public class Database {
         
         results.close();
         selectStatement.close();
+    }
+
+    /**
+     * Remove person with id from the SQL DB.
+     * @param id
+     * @throws SQLException 
+     */
+    public void deletePersonWithId(int id) throws SQLException {
+        
+        String deleteSQL = "DELETE FROM people WHERE id = ?";
+
+        PreparedStatement deleteStmt = con.prepareStatement(deleteSQL);
+        
+        deleteStmt.setInt(1, id);                                                   // id into SQL statement
+        
+        deleteStmt.execute();
+        
+        deleteStmt.close();
+    }
+    
+    /**
+     * Delete all rows from the people SQL table.
+     * This is just an example, and not used.
+     * @throws SQLException 
+     */
+    public void deleteAllDbRows() throws SQLException {
+        
+        String deleteAllSQL = "DELETE FROM people";
+
+        PreparedStatement deletetAllStmt = con.prepareStatement(deleteAllSQL);
+        
+        deletetAllStmt.execute();
+        
+        deletetAllStmt.close();
     }
 }

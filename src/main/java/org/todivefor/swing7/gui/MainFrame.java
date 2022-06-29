@@ -69,7 +69,23 @@ public class MainFrame extends JFrame {
             @Override
             public void removePerson(int row) {
 
-                controller.removePerson(row);
+                int id = controller.removePerson(row);                              // person ID from row
+                
+                int okOrCancel = JOptionPane.showConfirmDialog(MainFrame.this, 
+                        "Delete person with ID: " + id + " from SQL database?", 
+                        "Delete From DB", 
+                        JOptionPane.OK_CANCEL_OPTION);                              // Delete from SQL DB?
+                
+                if (okOrCancel == JOptionPane.OK_OPTION) {
+                    try {
+                        controller.removePersonFromSQLDb(id);                       // Yes, remove person with ID from SQL DB
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(MainFrame.this, 
+                                "Error deleting DB row with ID: " + id, 
+                                "SQL DB Delete Error", 
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                }
             }
         });
         
@@ -171,6 +187,7 @@ public class MainFrame extends JFrame {
     }
 
     private void connect() throws HeadlessException {
+        
         try {                                                                       // Connect DB
             controller.connect();
         } catch (Exception ex) {
