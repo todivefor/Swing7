@@ -12,13 +12,13 @@ import java.net.URL;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JPanel;
+import javax.swing.JToolBar;
 
 /**
  *
  * @author peterream
  */
-public class ToolBar extends JPanel implements ActionListener {
+public class ToolBar extends JToolBar implements ActionListener {
 
     private JButton saveButton;
     private JButton refreshButton;
@@ -27,17 +27,23 @@ public class ToolBar extends JPanel implements ActionListener {
 
     public ToolBar() {
 
-        setBorder(BorderFactory.createEtchedBorder());
+        // Get rid of border to make toolbar draggable
+//        setBorder(BorderFactory.createEtchedBorder());
+//        setFloatable(false);                                                        // Make not draggable
         
-        saveButton = new JButton("Save");
+        saveButton = new JButton();
         saveButton.setIcon(createIcon("/org/todivefor/swing7/images/"               // Package within Other Sources
                 + "save16.gif"));                                                   // Icon from /src/main/resources (Other Sources)
 //        saveButton.setIcon(new ImageIcon(getClass().getResource("/org/"
 //                + "todivefor/swing7/images/save16.gif")));                          // Alternative
+
+        saveButton.setToolTipText("Save table data to flat file");
         
-        refreshButton = new JButton("Refresh");
+        refreshButton = new JButton();
         refreshButton.setIcon(createIcon("/org/todivefor/swing7/images/"
                 + "refresh16.gif"));
+        
+        refreshButton.setToolTipText("Refresh, load table from SQL DB");
         
         Dimension refreshSize = refreshButton.getPreferredSize();                   // Make buttons
         saveButton.setPreferredSize(refreshSize);                                   // same size 
@@ -45,9 +51,10 @@ public class ToolBar extends JPanel implements ActionListener {
         saveButton.addActionListener(this);
         refreshButton.addActionListener(this);
 
-        setLayout(new FlowLayout(FlowLayout.LEFT));
+//        setLayout(new FlowLayout(FlowLayout.LEFT));
 
         add(saveButton);
+//        addSeparator();
         add(refreshButton);
 
     }

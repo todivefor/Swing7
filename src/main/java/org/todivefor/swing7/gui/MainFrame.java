@@ -15,10 +15,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
-import java.net.URL;
 import java.sql.SQLException;
 import java.util.prefs.Preferences;
-import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -189,7 +187,7 @@ public class MainFrame extends JFrame {
             
         });
         
-        add(toolBar, BorderLayout.NORTH);
+        add(toolBar, BorderLayout.PAGE_START);                                      // Make draggable
         add(tablePanel, BorderLayout.CENTER);
         add(formPanel, BorderLayout.WEST);
 //        add(btn, BorderLayout.SOUTH);
