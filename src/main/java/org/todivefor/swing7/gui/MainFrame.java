@@ -15,8 +15,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.prefs.Preferences;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -26,6 +28,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
+import org.todivefor.iconutils.IconUtils;
 
 /**
  *
@@ -225,6 +228,8 @@ public class MainFrame extends JFrame {
         fileMenu.setMnemonic(KeyEvent.VK_F);
         
         JMenuItem exportDataItem = new JMenuItem("Export Data...");                 // Export data
+        exportDataItem.setIcon(new IconUtils().getIcon(
+                "general", "Export", 16));
         
         exportDataItem.setMnemonic(KeyEvent.VK_E);
         exportDataItem.addActionListener(new ActionListener() {
@@ -246,6 +251,8 @@ public class MainFrame extends JFrame {
             
         });
         JMenuItem importDataItem = new JMenuItem("Import Data...");                 // Import data
+        importDataItem.setIcon(new IconUtils().getIcon(
+                "general", "Import", 16));
         
         importDataItem.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_I, ActionEvent.META_MASK));
@@ -272,6 +279,7 @@ public class MainFrame extends JFrame {
         });
         
         JMenuItem exitItem = new JMenuItem("Exit");
+        exitItem.setIcon(new IconUtils().getIcon("media", "Stop", 16));
         exitItem.setMnemonic(KeyEvent.VK_X);
         exitItem.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_X, ActionEvent.META_MASK));
@@ -313,8 +321,10 @@ public class MainFrame extends JFrame {
         JMenu windowMenu = new JMenu("Window");
         
         JMenu showMenu = new JMenu("Show");
+        showMenu.setIcon(new IconUtils().getIcon("media", "Play", 16));
         
         JMenuItem prefsItem = new JMenuItem("Preferences...");
+        prefsItem.setIcon(new IconUtils().getIcon("general", "Preferences", 16));
         
         prefsItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, 
                 ActionEvent.META_MASK));
