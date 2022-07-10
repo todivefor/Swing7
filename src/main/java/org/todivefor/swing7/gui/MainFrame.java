@@ -24,9 +24,11 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import org.todivefor.iconutils.IconUtils;
+import org.todivefor.laf.LAF;
 
 /**
  *
@@ -42,11 +44,15 @@ public class MainFrame extends JFrame {
     private final Controller controller;
     private TablePanel tablePanel;
     private final PrefsDialog prefsDialog;
+    private JSplitPane splitPane;
+    
     private Preferences prefs;
     
     public MainFrame() {
 
         super("Hello World!");
+        
+        LAF.initLookAndFeel(this, "Metal", "DefaultMetal");
         
         setLayout(new BorderLayout());
         
@@ -59,6 +65,12 @@ public class MainFrame extends JFrame {
         tablePanel = new TablePanel();
         
         prefsDialog = new PrefsDialog(this);
+        
+        formPanel = new FormPanel();
+        
+        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, formPanel, 
+                tablePanel);
+        splitPane.setOneTouchExpandable(true);                                      // icon to expand / contract
         
         prefs = Preferences.userRoot().node("db");                                  // Set prfs node to "db"
         
@@ -155,8 +167,6 @@ public class MainFrame extends JFrame {
             }
         });
         
-        formPanel = new FormPanel();
-        
         formPanel.setFormListener(new FormListener() {                              // FormPanel (OK)
             @Override
             public void formEventOcurred(FormEvent e) {
@@ -188,8 +198,10 @@ public class MainFrame extends JFrame {
         });
         
         add(toolBar, BorderLayout.PAGE_START);                                      // Make draggable
-        add(tablePanel, BorderLayout.CENTER);
-        add(formPanel, BorderLayout.WEST);
+
+        add(splitPane, BorderLayout.CENTER);
+//        add(tablePanel, BorderLayout.CENTER);
+//        add(formPanel, BorderLayout.WEST);
 //        add(btn, BorderLayout.SOUTH);
         
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -352,8 +364,11 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent ev) {
                 
                 JCheckBoxMenuItem menuItem = (JCheckBoxMenuItem)ev.getSource();
+                if (menuItem.isSelected()) {
+                    splitPane.setDividerLocation(
+                            (int)formPanel.getMinimumSize().getWidth());            // Needed to reappear
+                }
                 formPanel.setVisible(menuItem.isSelected());
-//                formPanel.setVisible(showFormItem.isSelected());
             }
             
         });

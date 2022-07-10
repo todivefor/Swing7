@@ -22,8 +22,9 @@ public class App {
             
             @Override
             public void run() {
-                LAF.initLookAndFeel("Metal", "DefaultMetal");
-                new MainFrame();
+
+                MainFrame mf = new MainFrame();
+                LAF.initLookAndFeel(mf, "Metal", "Ocean");
             }
 
         });
