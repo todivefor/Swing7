@@ -25,6 +25,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import org.todivefor.iconutils.IconUtils;
@@ -45,6 +46,7 @@ public class MainFrame extends JFrame {
     private TablePanel tablePanel;
     private final PrefsDialog prefsDialog;
     private JSplitPane splitPane;
+    private JTabbedPane tabbedPane;
     
     private Preferences prefs;
     
@@ -68,8 +70,12 @@ public class MainFrame extends JFrame {
         
         formPanel = new FormPanel();
         
+        tabbedPane = new JTabbedPane();                                             // TabbedPane
+        tabbedPane.add("Person Database", tablePanel);                              // 1st
+        tabbedPane.add("Messages", textPanel);                                      // 2nd
+        
         splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, formPanel, 
-                tablePanel);
+                tabbedPane);
         splitPane.setOneTouchExpandable(true);                                      // icon to expand / contract
         
         prefs = Preferences.userRoot().node("db");                                  // Set prfs node to "db"
