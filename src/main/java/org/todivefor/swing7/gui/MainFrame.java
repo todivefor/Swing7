@@ -45,8 +45,9 @@ public class MainFrame extends JFrame {
     private final Controller controller;
     private TablePanel tablePanel;
     private final PrefsDialog prefsDialog;
-    private JSplitPane splitPane;
-    private JTabbedPane tabbedPane;
+    private final JSplitPane splitPane;
+    private final JTabbedPane tabbedPane;
+    private MessagePanel messagePanel;
     
     private Preferences prefs;
     
@@ -70,9 +71,11 @@ public class MainFrame extends JFrame {
         
         formPanel = new FormPanel();
         
+        messagePanel = new MessagePanel();
+        
         tabbedPane = new JTabbedPane();                                             // TabbedPane
         tabbedPane.add("Person Database", tablePanel);                              // 1st
-        tabbedPane.add("Messages", textPanel);                                      // 2nd
+        tabbedPane.add("Messages", messagePanel);                                   // 2nd
         
         splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, formPanel, 
                 tabbedPane);
