@@ -17,6 +17,36 @@ import javax.swing.tree.TreeSelectionModel;
  *
  * @author peterream
  */
+class ServerInfo {
+
+    private final String name;
+    private final int id;
+    
+    public ServerInfo(String name, int id) {
+        
+        this.name = name;
+        this.id = id;
+    }
+
+    public String getName() {
+        
+        return name;
+    }
+
+    public int getId() {
+        
+        return id;
+    }
+
+    @Override
+    public String toString() {
+
+//        return id + ": " + name;
+        return name;
+    }
+    
+    
+}
 public class MessagePanel extends JPanel {
     
     private final JTree serverTree;
@@ -29,14 +59,22 @@ public class MessagePanel extends JPanel {
                 TreeSelectionModel.SINGLE_TREE_SELECTION);                          // Select one node only
         
         serverTree.addTreeSelectionListener(new TreeSelectionListener() {           // Tree click
+            
             @Override
             public void valueChanged(TreeSelectionEvent e) {
 
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode)
                         serverTree.getLastSelectedPathComponent();
                 
-                Object nodeObject = node.getUserObject();
-                System.out.println(nodeObject);
+                Object userObject = node.getUserObject();
+                
+//                if (userObject instanceof ServerInfo) {                             // Leaf?
+//                    int id = ((ServerInfo) userObject).getId();                     // Yes
+//                    System.out.println("Got user object with ID: " + id);
+//                }
+                
+
+                System.out.println(userObject);
             }
             
         });
@@ -58,11 +96,12 @@ public class MessagePanel extends JPanel {
         
         DefaultMutableTreeNode usaBranch = new DefaultMutableTreeNode("USA");       // Branch
         
-        DefaultMutableTreeNode nyLeaf = new DefaultMutableTreeNode("New York");     // Leaf
+        DefaultMutableTreeNode nyLeaf = new DefaultMutableTreeNode(
+                new ServerInfo("New York", 0));                                     // Leaf
         DefaultMutableTreeNode bostonLeaf = new DefaultMutableTreeNode(
-                "Boston");
+                new ServerInfo("Boston", 1));
         DefaultMutableTreeNode laLeaf = new DefaultMutableTreeNode(
-                "Los Angeles");
+                new ServerInfo("Los Angeles", 2));
         
         
         usaBranch.add(nyLeaf);                                                      // Add leaf to branch
@@ -72,9 +111,9 @@ public class MessagePanel extends JPanel {
         DefaultMutableTreeNode ukBranch = new DefaultMutableTreeNode("UK");
         
         DefaultMutableTreeNode londonLeaf = new DefaultMutableTreeNode(
-                "London");
+                new ServerInfo("London", 3));
         DefaultMutableTreeNode edinburghLeaf = new DefaultMutableTreeNode(
-                "Edinburgh");
+                new ServerInfo("Edinburgh", 4));
         
         ukBranch.add(londonLeaf);
         ukBranch.add(edinburghLeaf);
