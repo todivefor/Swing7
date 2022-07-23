@@ -11,7 +11,9 @@ import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeSelectionModel;
+import org.todivefor.iconutils.IconUtils;
 
 /**
  *
@@ -50,10 +52,21 @@ class ServerInfo {
 public class MessagePanel extends JPanel {
     
     private final JTree serverTree;
+    private DefaultTreeCellRenderer treeCellRenderer;
     
     public MessagePanel() {
         
-        serverTree = new JTree(createTree() );                                      // Tree of structureDefaultMutableTreeNode
+        // Set icons on nodes and leaves
+        treeCellRenderer = new DefaultTreeCellRenderer();
+        treeCellRenderer.setLeafIcon(new IconUtils().getIcon(
+                "development", "Server", 16));
+        treeCellRenderer.setOpenIcon(new IconUtils().getIcon(
+                "development", "WebComponent", 16));
+        treeCellRenderer.setClosedIcon(new IconUtils().getIcon(
+                "development", "WebComponentAdd", 16));
+        
+        serverTree = new JTree(createTree() );                                      // Tree of structure DefaultMutableTreeNode
+        serverTree.setCellRenderer(treeCellRenderer);
         
         serverTree.getSelectionModel().setSelectionMode(
                 TreeSelectionModel.SINGLE_TREE_SELECTION);                          // Select one node only
