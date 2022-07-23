@@ -8,7 +8,10 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeSelectionModel;
 
 /**
  *
@@ -21,6 +24,22 @@ public class MessagePanel extends JPanel {
     public MessagePanel() {
         
         serverTree = new JTree(createTree() );                                      // Tree of structureDefaultMutableTreeNode
+        
+        serverTree.getSelectionModel().setSelectionMode(
+                TreeSelectionModel.SINGLE_TREE_SELECTION);                          // Select one node only
+        
+        serverTree.addTreeSelectionListener(new TreeSelectionListener() {           // Tree click
+            @Override
+            public void valueChanged(TreeSelectionEvent e) {
+
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode)
+                        serverTree.getLastSelectedPathComponent();
+                
+                Object nodeObject = node.getUserObject();
+                System.out.println(nodeObject);
+            }
+            
+        });
         
         setLayout(new BorderLayout());
         
