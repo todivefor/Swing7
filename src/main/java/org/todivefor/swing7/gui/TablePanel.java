@@ -122,4 +122,11 @@ public class TablePanel extends JPanel {
         
         this.listener = listener;
     }
+
+    public PersonTableModel getTableModel() {
+        
+        return tableModel;
+    }
+    
+    
 }

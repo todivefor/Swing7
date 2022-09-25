@@ -80,6 +80,4 @@ public class PersonTableModel extends AbstractTableModel {
         
         return colNames;
     }
-    
-    
 }

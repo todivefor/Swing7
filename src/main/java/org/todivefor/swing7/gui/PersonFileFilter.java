@@ -46,6 +46,4 @@ public class PersonFileFilter extends FileFilter {
         
         return "Person database files (*.per)";
     }
-    
-    
 }
