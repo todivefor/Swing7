@@ -12,64 +12,28 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
+import org.todivefor.swing7.model.ServerInfo;
 
 /**
  *
  * @author peterream
  */
-class ServerInfo {
-
-    private final String name;
-    private final int id;
-    private boolean checked;
-    
-    public ServerInfo(String name, int id, boolean checked) {
-        
-        this.name = name;
-        this.id = id;
-        this.checked = checked;
-    }
-
-    public boolean isChecked() {
-        
-        return checked;
-    }
-
-    public void setChecked(boolean checked) {
-        
-        this.checked = checked;
-    }
-
-    public String getName() {
-        
-        return name;
-    }
-
-    public int getId() {
-        
-        return id;
-    }
-
-    @Override
-    public String toString() {
-
-//        return id + ": " + name;
-        return name;
-    }
-    
-    
-}
 public class MessagePanel extends JPanel {
     
     private final JTree serverTree;
     private ServerTreeCellRenderer treeCellRenderer;
+    private ServerTreeCellEditor treeCellEditor;
     
     public MessagePanel() {
         
         treeCellRenderer = new ServerTreeCellRenderer();
+        treeCellEditor = new ServerTreeCellEditor(); 
         
         serverTree = new JTree(createTree() );                                      // Tree of structure DefaultMutableTreeNode
         serverTree.setCellRenderer(treeCellRenderer);
+        serverTree.setCellEditor(treeCellEditor);
+        
+        serverTree.setEditable(true);
         
         serverTree.getSelectionModel().setSelectionMode(
                 TreeSelectionModel.SINGLE_TREE_SELECTION);                          // Select one node only
