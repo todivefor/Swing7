@@ -8,8 +8,8 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 import org.todivefor.swing7.model.ServerInfo;
@@ -38,6 +38,27 @@ public class MessagePanel extends JPanel {
         serverTree.getSelectionModel().setSelectionMode(
                 TreeSelectionModel.SINGLE_TREE_SELECTION);                          // Select one node only
         
+        treeCellEditor.addCellEditorListener(new CellEditorListener(){
+            @Override
+            public void editingStopped(ChangeEvent e) {
+                
+                ServerInfo info = (ServerInfo) treeCellEditor.
+                        getCellEditorValue();
+                System.out.println(info + ": " + info.getId() + ": " + 
+                        info.isChecked());
+            }
+
+            @Override
+            public void editingCanceled(ChangeEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); 
+            }
+            
+        });
+
+/*
+        This code is replaced by above. Listen for fireEditingStopped(). Not
+        interested in editingCanceled().
+        
         serverTree.addTreeSelectionListener(new TreeSelectionListener() {           // Tree click
             
             @Override
@@ -58,6 +79,7 @@ public class MessagePanel extends JPanel {
             }
             
         });
+*/
         
         setLayout(new BorderLayout());
         
