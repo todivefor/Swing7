@@ -5,11 +5,19 @@
 package org.todivefor.swing7.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Window;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -32,7 +40,11 @@ public class MessagePanel extends JPanel {
     
     private MessageServer messageServer;
     
+    private ProgressDialog progressDialog;
+    
     public MessagePanel() {
+        
+        progressDialog = new ProgressDialog((Window) getParent());
         
         messageServer = new MessageServer();
         
@@ -74,12 +86,7 @@ public class MessagePanel extends JPanel {
                 
                 messageServer.setSelectedServers(selectedServers);
                 
-                System.out.println("Messages waiting:" + 
-                        messageServer.getMessageCount());
-                
-                for (Message message : messageServer) {
-                    System.out.println(message.getTitle());
-                }
+                retrieveMessages();
             }
 
             @Override
@@ -119,6 +126,88 @@ public class MessagePanel extends JPanel {
         
         // JTree is almost always / always added to a JScrollPane
         add(new JScrollPane(serverTree), BorderLayout.CENTER);
+    }
+    
+    /**
+     * Where the work is done in another thread.
+     * doInBckground() - where work is done.
+     * process() - is called on each publish().
+     * done() - called when work is done.
+     */
+    private void retrieveMessages() {
+
+//        MessagePanel.this.serverTree.setEditable(false);                            // make tree not editable (checkboxes are not clickable from now on)
+        
+        System.out.println("Messages waiting:"
+                + messageServer.getMessageCount());
+        
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+
+                System.out.println("Showing modal dialog");
+                progressDialog.setVisible(true);
+                System.out.println("Finished showing modal dialog");
+            }
+
+        });
+        
+        SwingWorker<List<Message>, Integer> worker
+                = new SwingWorker<List<Message>, Integer>() {
+
+            /**
+             * Code you want to run in a separate thread.
+             */
+            @Override
+            protected List<Message> doInBackground() throws Exception {
+
+                List<Message> retrievedMessages = new ArrayList<Message>();
+                
+                int count = 0;
+                for (Message message : messageServer) {
+                    System.out.println(message.getTitle());
+                    retrievedMessages.add(message);
+                    count++;
+                    publish(count);
+                }
+                
+                return retrievedMessages;
+            }
+
+            @Override
+            protected void done() {
+
+                try {
+                    List<Message> retrivedMessages = get();
+                    
+                    System.out.println("Retrived " + retrivedMessages.size() + 
+                            " messages.");
+                    
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MessagePanel.class.getName()).log(
+                            Level.SEVERE, null, ex);
+                } catch (ExecutionException ex) {
+                    Logger.getLogger(MessagePanel.class.getName()).log(
+                            Level.SEVERE, null, ex);
+                }
+                
+//                MessagePanel.this.serverTree.setEditable(true);                     // make Tree editable again (make checkboxes clickable again)
+                
+                progressDialog.setVisible(false);
+
+            }
+
+            @Override
+            protected void process(List<Integer> counts) {
+
+                int retrieved = counts.get(counts.size() - 1);
+                
+                System.out.println("Got " + retrieved + " messages.");
+            }
+
+        };
+        
+        worker.execute();
     }
     
     /**
