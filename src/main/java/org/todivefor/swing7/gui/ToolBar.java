@@ -31,15 +31,17 @@ public class ToolBar extends JToolBar implements ActionListener {
         
         saveButton = new JButton();
         saveButton.setIcon(createIcon("/org/todivefor/swing7/images/"               // Package within Other Sources
-                + "save16.gif"));                                                   // Icon from /src/main/resources (Other Sources)
+                + "Save16.gif"));                                                   // Icon from /src/main/resources (Other Sources)
 //        saveButton.setIcon(new ImageIcon(getClass().getResource("/org/"
-//                + "todivefor/swing7/images/save16.gif")));                          // Alternative
+//                + "todivefor/swing7/images/Save16.gif")));                          // Alternative
 
         saveButton.setToolTipText("Save table data to flat file");
         
         refreshButton = new JButton();
         refreshButton.setIcon(createIcon("/org/todivefor/swing7/images/"
-                + "refresh16.gif"));
+                + "Refresh16.gif"));
+//        refreshButton.setIcon(new ImageIcon(getClass().getResource("/org/"
+//                + "todivefor/swing7/images/Refresh16.gif")));                          // Alternative
         
         refreshButton.setToolTipText("Refresh, load table from SQL DB");
         
