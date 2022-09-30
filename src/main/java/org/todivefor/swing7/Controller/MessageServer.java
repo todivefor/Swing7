@@ -20,24 +20,24 @@ import org.todivefor.swing7.model.Message;
  */
 public class MessageServer implements Iterable<Message> {
     
-    private Map<Integer, List<Message>> messages;
+    private final Map<Integer, List<Message>> messages;
     
-    private List<Message> selected;
+    private final List<Message> selected;
 
     public MessageServer() {
         
-        messages = new TreeMap<Integer, List<Message>>();
+        messages = new TreeMap<>();
         
-        selected = new ArrayList<Message>();
+        selected = new ArrayList<>();
         
-        List<Message> list = new ArrayList<Message>();
+        List<Message> list = new ArrayList<>();
         list.add(new Message("The cat is missing", 
                 "Have you seen Felix anywhere?"));
         list.add(new Message("See you later?", 
                 "Are we still meeting in the pub?"));
         messages.put(0, list);
         
-        list = new ArrayList<Message>();
+        list = new ArrayList<>();
         list.add(new Message("How about dinner later?", 
                 "Are you doing anything later on?"));
         messages.put(1, list);

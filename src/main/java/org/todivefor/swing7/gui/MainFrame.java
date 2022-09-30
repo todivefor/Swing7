@@ -70,8 +70,8 @@ public class MainFrame extends JFrame {
         prefsDialog = new PrefsDialog(this);
         
         formPanel = new FormPanel();
-        
-        messagePanel = new MessagePanel();
+
+        messagePanel = new MessagePanel(this);
         
         tabbedPane = new JTabbedPane();                                             // TabbedPane
         tabbedPane.add("Person Database", tablePanel);                              // 1st
@@ -343,7 +343,8 @@ public class MainFrame extends JFrame {
         showMenu.setIcon(new IconUtils().getIcon("media", "Play", 16));
         
         JMenuItem prefsItem = new JMenuItem("Preferences...");
-        prefsItem.setIcon(new IconUtils().getIcon("general", "Preferences", 16));
+        prefsItem.setIcon(new IconUtils().getIcon("general", 
+                "Preferences", 16));
         
         prefsItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, 
                 ActionEvent.META_MASK));

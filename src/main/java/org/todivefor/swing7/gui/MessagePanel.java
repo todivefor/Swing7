@@ -5,7 +5,6 @@
 package org.todivefor.swing7.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Window;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -13,11 +12,7 @@ import java.util.TreeSet;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
-import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
+import javax.swing.*;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -42,9 +37,13 @@ public class MessagePanel extends JPanel {
     
     private ProgressDialog progressDialog;
     
-    public MessagePanel() {
+    /**
+     * Constructor for MessagePanel
+     * @param parent 
+     */
+    public MessagePanel(JFrame parent) {
         
-        progressDialog = new ProgressDialog((Window) getParent());
+        progressDialog = new ProgressDialog(parent);
         
         messageServer = new MessageServer();
         
@@ -138,20 +137,21 @@ public class MessagePanel extends JPanel {
 
 //        MessagePanel.this.serverTree.setEditable(false);                            // make tree not editable (checkboxes are not clickable from now on)
         
-        System.out.println("Messages waiting:"
-                + messageServer.getMessageCount());
+        progressDialog.setMaximum(messageServer.getMessageCount());
+
+        progressDialog.setVisible(true);
+
+/*      Below moved to ProgressDialog.setVisible()
         
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
 
-                System.out.println("Showing modal dialog");
                 progressDialog.setVisible(true);
-                System.out.println("Finished showing modal dialog");
             }
 
         });
-        
+*/
         SwingWorker<List<Message>, Integer> worker
                 = new SwingWorker<List<Message>, Integer>() {
 
@@ -180,8 +180,8 @@ public class MessagePanel extends JPanel {
                 try {
                     List<Message> retrivedMessages = get();
                     
-                    System.out.println("Retrived " + retrivedMessages.size() + 
-                            " messages.");
+//                    System.out.println("Retrived " + retrivedMessages.size() +
+//                            " messages.");
                     
                 } catch (InterruptedException ex) {
                     Logger.getLogger(MessagePanel.class.getName()).log(
@@ -202,7 +202,7 @@ public class MessagePanel extends JPanel {
 
                 int retrieved = counts.get(counts.size() - 1);
                 
-                System.out.println("Got " + retrieved + " messages.");
+                progressDialog.setValue(retrieved);
             }
 
         };
