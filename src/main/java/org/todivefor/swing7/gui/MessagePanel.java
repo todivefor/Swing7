@@ -25,7 +25,7 @@ import org.todivefor.swing7.model.ServerInfo;
  *
  * @author peterream
  */
-public class MessagePanel extends JPanel {
+public class MessagePanel extends JPanel implements ProgressDialogListener {
     
     private final JTree serverTree;
     private ServerTreeCellRenderer treeCellRenderer;
@@ -37,13 +37,16 @@ public class MessagePanel extends JPanel {
     
     private ProgressDialog progressDialog;
     
+    private SwingWorker<List<Message>, Integer> worker;
+    
     /**
      * Constructor for MessagePanel
      * @param parent 
      */
     public MessagePanel(JFrame parent) {
         
-        progressDialog = new ProgressDialog(parent);
+        progressDialog = new ProgressDialog(parent, 
+                "Retrieving Downloading ...");
         
         messageServer = new MessageServer();
         
@@ -140,6 +143,8 @@ public class MessagePanel extends JPanel {
         progressDialog.setMaximum(messageServer.getMessageCount());
 
         progressDialog.setVisible(true);
+        
+        progressDialog.setProgressDialogListener(this);
 
 /*      Below moved to ProgressDialog.setVisible()
         
@@ -152,19 +157,23 @@ public class MessagePanel extends JPanel {
 
         });
 */
-        SwingWorker<List<Message>, Integer> worker
-                = new SwingWorker<List<Message>, Integer>() {
+        worker = new SwingWorker<List<Message>, Integer>() {
 
             /**
              * Code you want to run in a separate thread.
              */
             @Override
             protected List<Message> doInBackground() throws Exception {
-
+              
                 List<Message> retrievedMessages = new ArrayList<Message>();
                 
                 int count = 0;
                 for (Message message : messageServer) {
+
+                    if (isCancelled()) {
+                        break;                                                      // Stop processing
+                    }
+
                     System.out.println(message.getTitle());
                     retrievedMessages.add(message);
                     count++;
@@ -176,6 +185,12 @@ public class MessagePanel extends JPanel {
 
             @Override
             protected void done() {
+                
+                progressDialog.setVisible(false);
+                
+                if (isCancelled()) {
+                    return;
+                }
 
                 try {
                     List<Message> retrivedMessages = get();
@@ -193,8 +208,6 @@ public class MessagePanel extends JPanel {
                 
 //                MessagePanel.this.serverTree.setEditable(true);                     // make Tree editable again (make checkboxes clickable again)
                 
-                progressDialog.setVisible(false);
-
             }
 
             @Override
@@ -247,5 +260,13 @@ public class MessagePanel extends JPanel {
         top.add(ukBranch);
         
         return top;                                                                 // Return structure
+    }
+
+    @Override
+    public void progressDialogCancelled() {
+        
+        if (worker != null) {
+            worker.cancel(true);
+        }
     }
 }

@@ -6,6 +6,10 @@ package org.todivefor.swing7.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  *
@@ -15,17 +19,28 @@ public class ProgressDialog extends JDialog {
 
     private JButton cancelButton;
     private JProgressBar progressBar;
+    private ProgressDialogListener listener;
     
     /**
      * ProgressDialog constructor
      * @param parent 
      */
-    public ProgressDialog(Window parent) {
+    public ProgressDialog(Window parent, String title) {
         
-        super(parent, "Downloading messages ..", 
-                ModalityType.APPLICATION_MODAL);
+        super(parent, title, ModalityType.APPLICATION_MODAL);
 
         cancelButton = new JButton("Cancel");
+        
+        cancelButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                if (listener != null) {
+                    listener.progressDialogCancelled();
+                }
+            }
+            
+        });
 
         progressBar = new JProgressBar();
         progressBar.setStringPainted(rootPaneCheckingEnabled);                      // Allow progressBar text or not
@@ -45,12 +60,31 @@ public class ProgressDialog extends JDialog {
 
         add(progressBar);
         add(cancelButton);
+        
+        setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+
+                if (listener != null) {
+                    listener.progressDialogCancelled();
+                }
+                super.windowClosing(e);
+            }
+            
+            
+        });
 
         pack();
 
         setLocationRelativeTo(parent);
     }
 
+    public void setProgressDialogListener(ProgressDialogListener listener) {
+        
+        this.listener = listener;
+    }
     /**
      * Set maximum value (designates done). If maximum is unknown, can set
      * progressBar.setIndeterminate(true).
