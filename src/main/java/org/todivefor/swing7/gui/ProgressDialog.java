@@ -28,6 +28,11 @@ public class ProgressDialog extends JDialog {
         cancelButton = new JButton("Cancel");
 
         progressBar = new JProgressBar();
+        progressBar.setStringPainted(rootPaneCheckingEnabled);                      // Allow progressBar text or not
+        
+        progressBar.setMaximum(10);                                                 // Just in case. Max should be set or div by 0
+        
+        progressBar.setString("Retrieving messages ...");
 
 //        progressBar.setIndeterminate(true);                                         // If you don't know maximum
         
@@ -62,6 +67,9 @@ public class ProgressDialog extends JDialog {
      */
     public void setValue (int value) {
 
+        int progress = 100 * (value / progressBar.getMaximum());
+        
+        progressBar.setString(String.format("%d%% complete", progress));
         progressBar.setValue(value);
     }
 
