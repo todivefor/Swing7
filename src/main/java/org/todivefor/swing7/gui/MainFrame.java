@@ -37,8 +37,6 @@ import org.todivefor.laf.LAF;
  */
 public class MainFrame extends JFrame {
     
-    private final TextPanel textPanel;
-//    private JButton btn;
     private final ToolBar toolBar;
     private final FormPanel formPanel;
     private final JFileChooser fileChooser;
@@ -61,8 +59,6 @@ public class MainFrame extends JFrame {
         
         toolBar = new ToolBar();
         
-        textPanel = new TextPanel();
-        
         controller = new Controller();
         
         tablePanel = new TablePanel();
@@ -76,7 +72,7 @@ public class MainFrame extends JFrame {
         tabbedPane = new JTabbedPane();                                             // TabbedPane
         tabbedPane.add("Person Database", tablePanel);                              // 1st
         tabbedPane.add("Messages", messagePanel);                                   // 2nd
-        
+              
         splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, formPanel, 
                 tabbedPane);
         splitPane.setOneTouchExpandable(true);                                      // icon to expand / contract

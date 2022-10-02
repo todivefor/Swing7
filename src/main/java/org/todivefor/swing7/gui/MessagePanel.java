@@ -5,6 +5,7 @@
 package org.todivefor.swing7.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -39,12 +40,19 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
     
     private SwingWorker<List<Message>, Integer> worker;
     
+    private TextPanel textPanel;
+    
+    private JList messageList;
+    
+    private JSplitPane upperPane;
+    private JSplitPane lowerPane;
+    
     /**
      * Constructor for MessagePanel
      * @param parent 
      */
     public MessagePanel(JFrame parent) {
-        
+              
         progressDialog = new ProgressDialog(parent, 
                 "Retrieving Downloading ...");
         
@@ -126,10 +134,26 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
         
         setLayout(new BorderLayout());
         
+        textPanel = new TextPanel();
+        
+        messageList = new JList();
+        
+        lowerPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, messageList, 
+                textPanel);
+        upperPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(
+                serverTree), lowerPane);
+        
+        // Make the splitPanes equal in size
+        textPanel.setMinimumSize(new Dimension(10, 100));                           // x doesn't matter
+        messageList.setMinimumSize(new Dimension(10, 100));
+        
+        upperPane.setResizeWeight(0.5);
+        lowerPane.setResizeWeight(0.5);
+        
         // JTree is almost always / always added to a JScrollPane
-        add(new JScrollPane(serverTree), BorderLayout.CENTER);
+        add(upperPane, BorderLayout.CENTER);
     }
-    
+      
     /**
      * Where the work is done in another thread.
      * doInBckground() - where work is done.
