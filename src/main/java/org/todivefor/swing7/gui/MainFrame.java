@@ -28,6 +28,8 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import org.todivefor.iconutils.IconUtils;
 import org.todivefor.laf.LAF;
 
@@ -72,6 +74,19 @@ public class MainFrame extends JFrame {
         tabbedPane = new JTabbedPane();                                             // TabbedPane
         tabbedPane.add("Person Database", tablePanel);                              // 1st
         tabbedPane.add("Messages", messagePanel);                                   // 2nd
+        
+        tabbedPane.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+               
+                int tabIndex = tabbedPane.getSelectedIndex();
+                
+                if (tabIndex == 1) {
+                    messagePanel.refresh();
+                }
+            }
+            
+        });
               
         splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, formPanel, 
                 tabbedPane);

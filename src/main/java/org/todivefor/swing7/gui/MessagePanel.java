@@ -44,6 +44,9 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
     
     private JList messageList;
     
+    private DefaultListModel messageListModel;
+            
+    
     private JSplitPane upperPane;
     private JSplitPane lowerPane;
     
@@ -53,6 +56,8 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
      */
     public MessagePanel(JFrame parent) {
               
+        messageListModel = new DefaultListModel();
+        
         progressDialog = new ProgressDialog(parent, 
                 "Retrieving Downloading ...");
         
@@ -77,14 +82,14 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
         serverTree.getSelectionModel().setSelectionMode(
                 TreeSelectionModel.SINGLE_TREE_SELECTION);                          // Select one node only
         
+        messageServer.setSelectedServers(selectedServers);
+        
         treeCellEditor.addCellEditorListener(new CellEditorListener(){
             @Override
             public void editingStopped(ChangeEvent e) {
                 
                 ServerInfo info = (ServerInfo) treeCellEditor.
                         getCellEditorValue();
-                System.out.println(info + ": " + info.getId() + ": " + 
-                        info.isChecked());
                 
                 int serverId = info.getId();
                 
@@ -94,6 +99,7 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
                     selectedServers.remove(serverId);
                 }
                 
+                // Need here for tab selection - before a tree node is selected
                 messageServer.setSelectedServers(selectedServers);
                 
                 retrieveMessages();
@@ -136,10 +142,10 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
         
         textPanel = new TextPanel();
         
-        messageList = new JList();
+        messageList = new JList(messageListModel);
         
-        lowerPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, messageList, 
-                textPanel);
+        lowerPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, 
+                new JScrollPane(messageList), textPanel);
         upperPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(
                 serverTree), lowerPane);
         
@@ -153,7 +159,12 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
         // JTree is almost always / always added to a JScrollPane
         add(upperPane, BorderLayout.CENTER);
     }
-      
+    
+      public void refresh() {
+        
+        retrieveMessages();
+    }
+    
     /**
      * Where the work is done in another thread.
      * doInBckground() - where work is done.
@@ -217,10 +228,13 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
                 }
 
                 try {
-                    List<Message> retrivedMessages = get();
+                    List<Message> retrievedMessages = get();
+                   
+                    messageListModel.removeAllElements();
                     
-//                    System.out.println("Retrived " + retrivedMessages.size() +
-//                            " messages.");
+                    for (Message message : retrievedMessages) {
+                        messageListModel.addElement(message.getTitle());
+                    }
                     
                 } catch (InterruptedException ex) {
                     Logger.getLogger(MessagePanel.class.getName()).log(
