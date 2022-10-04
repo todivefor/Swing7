@@ -28,6 +28,49 @@ public class PersonTableModel extends AbstractTableModel {
         this.db = db;
     }
 
+    /**
+     * Overridden from AbstractTableModel. Set true for those cells we want to be
+     * able to edit.
+     * @param row
+     * @param col
+     * @return 
+     */
+    @Override
+    public boolean isCellEditable(int row, int col) {
+        
+        switch (col) {
+            case 1:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * Overridden from AbstractTableModel. Ignore all columns but column 1. 
+     * Set in our db ArrayList<Person>.
+     * @param value
+     * @param row
+     * @param col 
+     */
+    @Override
+    public void setValueAt(Object value, int row, int col) {
+        
+        if (db == null) {
+            return;
+        }
+        
+        Person person = db.get(row);
+        
+        switch (col) {
+            case 1:
+                person.setName((String) value);
+                break;
+            default:
+                return;
+        }
+    }
+
     @Override
     public String getColumnName(int column) {
         

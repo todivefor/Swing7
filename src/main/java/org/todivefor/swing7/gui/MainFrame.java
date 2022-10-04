@@ -172,18 +172,7 @@ public class MainFrame extends JFrame {
             @Override
             public void refreshEventOccured() {
                 
-                connect();
-                
-                try {
-                    controller.load();
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(MainFrame.this, 
-                            "Problem loading database.", 
-                            "Database Load Error", 
-                            JOptionPane.ERROR_MESSAGE);
-                }
-                
-                tablePanel.refresh();
+                refresh();
             }
         });
         
@@ -223,12 +212,30 @@ public class MainFrame extends JFrame {
 //        add(tablePanel, BorderLayout.CENTER);
 //        add(formPanel, BorderLayout.WEST);
 //        add(btn, BorderLayout.SOUTH);
+
+        refresh();                                                                  // Loads table
         
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setMinimumSize(new Dimension(500, 400));                                    // Minimum so FormPanel won't get too small
         setSize(600, 500);
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    private void refresh() throws HeadlessException {
+        
+        connect();
+        
+        try {
+            controller.load();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(MainFrame.this,
+                    "Problem loading database.",
+                    "Database Load Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+        
+        tablePanel.refresh();
     }
 
     private void connect() throws HeadlessException {
