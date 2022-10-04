@@ -16,6 +16,8 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 import org.todivefor.swing7.Controller.MessageServer;
@@ -143,6 +145,17 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
         textPanel = new TextPanel();
         
         messageList = new JList(messageListModel);
+        
+        messageList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+
+                Message message = (Message) messageList.getSelectedValue();
+                textPanel.setText(message.getContents());
+            }
+            
+        });
+        
         messageList.setCellRenderer(new MessageListRenderer());
         
         lowerPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, 
@@ -236,6 +249,8 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
                     for (Message message : retrievedMessages) {
                         messageListModel.addElement(message);
                     }
+                    
+                    messageList.setSelectedIndex(0);                                // Initially select first item
                     
                 } catch (InterruptedException ex) {
                     Logger.getLogger(MessagePanel.class.getName()).log(
