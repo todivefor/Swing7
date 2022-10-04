@@ -7,6 +7,7 @@ package org.todivefor.swing7.gui;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -24,6 +25,7 @@ import org.todivefor.swing7.model.Message;
 public class MessageListRenderer implements ListCellRenderer {
     
     private JPanel panel;
+    
     private JLabel label;
     
     private Color selectedColor;
@@ -33,6 +35,13 @@ public class MessageListRenderer implements ListCellRenderer {
         
         panel = new JPanel();
         label = new JLabel();
+        
+        /*
+            createFont() returns font of size 1 (basically invisible). 
+            deriveFont() doesn't work with size only?, need style.
+        */
+        label.setFont(Utils.createFont("/org/todivefor/swing7/fonts/"
+                + "CrimewaveBb.ttf").deriveFont(Font.PLAIN, 20));
         
         selectedColor = new Color(210, 210, 255);
         normalColor = Color.WHITE;

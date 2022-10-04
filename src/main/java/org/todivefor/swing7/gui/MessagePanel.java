@@ -150,8 +150,19 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
             @Override
             public void valueChanged(ListSelectionEvent e) {
 
+                /*
+                    ERATA
+                
+                    If you select a message title and afterwards tick/untick one 
+                    of the server checkboxes, then the valueChanged() method of 
+                    the ListSelectionListener will be called before 
+                    retrieveMessages() has finished, and messageList.
+                    getSelectedValue() will return null.
+                */
                 Message message = (Message) messageList.getSelectedValue();
-                textPanel.setText(message.getContents());
+                if (message != null) {
+                    textPanel.setText(message.getContents());
+                }
             }
             
         });
