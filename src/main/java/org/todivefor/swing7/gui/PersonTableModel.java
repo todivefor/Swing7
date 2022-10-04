@@ -41,6 +41,8 @@ public class PersonTableModel extends AbstractTableModel {
         switch (col) {
             case 1:
                 return true;
+            case 5:                                                                 // Citizen
+                return true;
             default:
                 return false;
         }
@@ -63,11 +65,46 @@ public class PersonTableModel extends AbstractTableModel {
         Person person = db.get(row);
         
         switch (col) {
-            case 1:
+            case 1:                                                                 // Name
                 person.setName((String) value);
+                break;
+    
+            case 5:                                                                 // US citizen
+                person.setUsCitizen((Boolean) value);
                 break;
             default:
                 return;
+        }
+    }
+
+    /**
+     * Overridden from AbstractTableModel. Setting column 5 to Boolean adds
+     * the checkbox.
+     * @param col
+     * @return 
+     */
+    @Override
+    public Class<?> getColumnClass(int col) {
+
+        switch (col) {
+            case 0:
+                return Integer.class;
+            case 1:
+                return String.class;
+            case 2:
+                return String.class;
+            case 3:
+                return String.class;
+            case 4:
+                return String.class;
+            case 5:
+                return Boolean.class;
+            case 6:
+                return String.class;
+            case 7:
+                return String.class;
+            default:
+                return null;
         }
     }
 
