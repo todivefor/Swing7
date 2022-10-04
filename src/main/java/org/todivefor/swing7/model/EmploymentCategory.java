@@ -10,8 +10,26 @@ package org.todivefor.swing7.model;
  */
 public enum EmploymentCategory {
     
-    employed,
-    selEmployed,
-    unemployed,
-    other
+    employed("employed"),
+    selEmployed("self employed"),
+    unemployed("un-employed"),
+    other("other");
+    
+    private final String text;
+    
+    /**
+     * Enumeration constructors have to be private.
+     * @param text 
+     */
+    private EmploymentCategory(String text) {
+        
+        this.text = text;
+    }
+
+    @Override
+    public String toString() {
+        
+        return text;
+    }
+    
 }

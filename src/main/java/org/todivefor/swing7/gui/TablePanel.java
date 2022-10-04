@@ -16,6 +16,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.TableColumnModel;
+import org.todivefor.swing7.model.EmploymentCategory;
 import org.todivefor.swing7.model.Person;
 
 /**
@@ -34,6 +35,11 @@ public class TablePanel extends JPanel {
         tableModel = new PersonTableModel();
         table = new JTable(tableModel);
         popUp = new JPopupMenu();
+        
+        table.setDefaultRenderer(EmploymentCategory.class, 
+                new EmploymentCategoryRenderer());
+        
+        table.setRowHeight(25);
         
         JMenuItem removeItem = new JMenuItem("Delete row");
         popUp.add(removeItem);
