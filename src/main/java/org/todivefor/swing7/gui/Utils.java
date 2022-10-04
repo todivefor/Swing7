@@ -4,6 +4,9 @@
  */
 package org.todivefor.swing7.gui;
 
+import java.net.URL;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author peterream
@@ -31,5 +34,34 @@ public class Utils {
         }
         
         return name.substring(pointIndex + 1, name.length());                       // Extension
+    }
+    
+    /**
+     * Pass icon back. Done this way so can report back if problem loading
+     * icon.
+     * 
+     * As of Java 9, the module system allows classes to only load resources 
+     * from the same module. The System class belongs to the java.base module, 
+     * hence it cannot load a resource from our custom package.
+     * 
+     * Also found that JDK for Maven must match Sources and Compile.
+     * 
+     * @param path
+     * @return 
+     */
+    public static ImageIcon createIcon(String path) {
+        
+        //  TODO doesn't work
+        
+//        URL url = getClass().getResource(path);
+        URL url = Utils.class.getResource(path);
+        
+        if (url == null) {
+            System.err.println("Unable to load image: " + path);
+        }
+        
+        ImageIcon icon = new ImageIcon(url);
+        
+        return icon;
     }
 }
