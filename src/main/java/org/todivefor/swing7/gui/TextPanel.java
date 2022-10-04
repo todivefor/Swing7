@@ -5,6 +5,7 @@
 package org.todivefor.swing7.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -23,6 +24,9 @@ public class TextPanel extends JPanel {
         textArea = new JTextArea();
         
         textArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));            // Move down a little in textArea
+        
+        // Logical fonts - Serif (bulbs), SansSerif (no bulbs), MonoSpaced
+        textArea.setFont(new Font("Serif", Font.PLAIN, 24));
         
         setLayout(new BorderLayout());
         
