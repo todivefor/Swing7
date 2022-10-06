@@ -13,6 +13,7 @@ public enum EmploymentCategory {
     employed("employed"),
     selEmployed("self employed"),
     unemployed("un-employed"),
+    retired("retired"),
     other("other");
     
     private final String text;
