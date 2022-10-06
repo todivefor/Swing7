@@ -24,7 +24,7 @@ public class Main {
         frame.add(game, BorderLayout.CENTER);
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(new Dimension(400, 400));
+        frame.setSize(new Dimension(600, 500));
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
