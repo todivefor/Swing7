@@ -10,6 +10,9 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
@@ -27,7 +30,8 @@ public class Game extends JComponent {
     private ActionListener listener;
     
     private Ellipse2D.Double ball = new Ellipse2D.Double(100, 100, 15, 15);
-    private RoundRectangle2D.Double bat;
+    private RoundRectangle2D.Double bat = new RoundRectangle2D.Double(
+            200, 200, 100, 10, 20, 20);
     
     private double speed = 10.0;
     
@@ -51,8 +55,43 @@ public class Game extends JComponent {
     };
     
         timer = new Timer(20, listener);
-    
+
         timer.start();
+
+        addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+
+                bat.x = e.getX() - bat.width / 2;
+                bat.y = e.getY() - bat.height / 2;
+            }
+        });
+        
+        /**
+         * Use MouseAdapter because fewer methods
+         */
+        addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            
+            //  Not sure what this is for
+            bat.x = e.getX();
+            bat.y = e.getY();
+            
+            //  Pause game (my innovation)
+            if (timer.isRunning()) {
+                timer.stop();
+            } else {
+                timer.start();
+            }
+        }
+            
+        });
     }
 //    
 //    private int xDirectionBat = 1;
@@ -83,7 +122,7 @@ public class Game extends JComponent {
         
         //  Bat
         g2.setColor(Color.BLUE);
-        g2.fill(new RoundRectangle2D.Double(200, 200, 100, 10, 20, 20));
+        g2.fill(bat);
         
         g.drawImage(buffer, 0, 0, null);
     }
