@@ -6,6 +6,8 @@ package org.todivefor.swing7.AppletsAsSwing;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 
 /**
@@ -22,8 +24,20 @@ public class Main {
         Game game = new Game();
         
         frame.add(game, BorderLayout.CENTER);
+                
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                
+                System.out.println("Window closing");
+                game.stop();
+                frame.dispose();
+                System.gc();
+            }
+            
+        });
         
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.setSize(new Dimension(600, 500));
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
