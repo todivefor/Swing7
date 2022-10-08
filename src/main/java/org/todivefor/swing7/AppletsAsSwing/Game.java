@@ -8,17 +8,21 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
-import java.net.MalformedURLException;
 import javax.swing.JComponent;
 import javax.swing.Timer;
 
@@ -33,8 +37,10 @@ public class Game extends JComponent {
     private ActionListener listener;
     
     private Ellipse2D.Double ball = new Ellipse2D.Double(100, 100, 15, 15);
+    
     private RoundRectangle2D.Double bat = new RoundRectangle2D.Double(
             200, 200, 100, 10, 20, 20);
+    private double batSpeed = 10.0;
     
     private double speed = 10.0;
     
@@ -46,7 +52,7 @@ public class Game extends JComponent {
     /**
      * Game constructor. Setup and start timer.
      */
-    public Game() throws MalformedURLException {
+    public Game() {
     
     listener = new ActionListener() {
         
@@ -94,6 +100,58 @@ public class Game extends JComponent {
             }
         }
             
+        });
+        
+        /**
+         * Return true if you have handled key and don't want it handled 
+         * any further.
+         * 
+         * Not using KeyListener due to focus issue. See notes in lesson 84.
+         */
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().
+                addKeyEventDispatcher(new KeyEventDispatcher() {
+                    
+            @Override
+            public boolean dispatchKeyEvent(KeyEvent e) {
+
+                int key = e.getKeyCode();
+                
+                //  Only on ket pressed, not on release
+                if (e.getID() == KeyEvent.KEY_PRESSED) {
+                    switch (key) {
+                        case KeyEvent.VK_UP:
+
+                            bat.y -= batSpeed;
+                            break;
+
+                        case KeyEvent.VK_DOWN:
+                            bat.y += batSpeed;
+                            break;
+
+                        case KeyEvent.VK_RIGHT:
+                            bat.x += batSpeed;
+                            break;
+
+                        case KeyEvent.VK_LEFT:
+                            bat.x -= batSpeed;
+                            break;
+                    }
+                }
+                return false;
+            }
+
+        });
+        
+        /**
+         * Change in component size. ComponentAdapter used (fewer methods).
+         * Buffer == null tested for in paintComponent().
+         */
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+
+                buffer = null;
+            }
         });
 
         //  Hide cursor hotspot used in tutorial (1, 1) doesn't work
@@ -159,7 +217,7 @@ public class Game extends JComponent {
             }
         }
         
-        repaint();
+        repaint();                                                                  // Trigers paint to be called
     }
 
     /**
