@@ -5,8 +5,10 @@
 package org.todivefor.swing7.AppletsAsSwing;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +18,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
+import java.net.MalformedURLException;
 import javax.swing.JComponent;
 import javax.swing.Timer;
 
@@ -43,7 +46,7 @@ public class Game extends JComponent {
     /**
      * Game constructor. Setup and start timer.
      */
-    public Game() {
+    public Game() throws MalformedURLException {
     
     listener = new ActionListener() {
         
@@ -92,13 +95,17 @@ public class Game extends JComponent {
         }
             
         });
+
+        //  Hide cursor hotspot used in tutorial (1, 1) doesn't work
+        BufferedImage cursorImg = new BufferedImage(1, 1, 
+                BufferedImage.TYPE_INT_ARGB);
+        Point hotSpot = new Point(0, 0);
+        Cursor hiddenCursor = getToolkit().createCustomCursor(cursorImg, 
+                hotSpot, "hidden cursor");
+
+        setCursor(hiddenCursor);
     }
-//    
-//    private int xDirectionBat = 1;
-//    private int yDirectionNat = 1;
-    /**
-     * Black background.
-     */
+
     @Override
     protected void paintComponent(Graphics g) {
         
