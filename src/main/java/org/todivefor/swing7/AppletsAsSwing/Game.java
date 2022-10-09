@@ -30,7 +30,7 @@ import javax.swing.Timer;
  *
  * @author peterream
  */
-public class Game extends JComponent {
+public class Game extends JComponent implements ActionListener {
 
     private Timer timer;
     
@@ -49,23 +49,27 @@ public class Game extends JComponent {
     
     private BufferedImage buffer;
     
+    private boolean checkIntersection = true;
+    
     /**
      * Game constructor. Setup and start timer.
      */
     public Game() {
-    
-    listener = new ActionListener() {
         
-        @Override
-        public void actionPerformed(ActionEvent e) {
-
-            update();
-        }
-    };
+//      *********** Init ****************
+//    listener = new ActionListener() {
+//        
+//        @Override
+//        public void actionPerformed(ActionEvent e) {
+//
+//            update();
+//        }
+//    };
     
-        timer = new Timer(20, listener);
+        timer = new Timer(20, this);
 
         timer.start();
+//      ***************************
 
         addMouseMotionListener(new MouseMotionListener() {
             @Override
@@ -217,6 +221,20 @@ public class Game extends JComponent {
             }
         }
         
+        /*
+            checkIntersection does not check for intersection until ball clears
+            the bat.
+        */
+        if (ball.intersects(bat.getBounds2D())) {
+            if (checkIntersection) {
+//                xDirectionBall = -(xDirectionBall);
+                yDirectionBall = -(yDirectionBall);
+                checkIntersection = false;
+            }
+        } else {
+            checkIntersection = true;
+        }
+        
         repaint();                                                                  // Trigers paint to be called
     }
 
@@ -239,5 +257,11 @@ public class Game extends JComponent {
     public void stop() {
         
         timer.stop();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        
+        update();
     }
 }
